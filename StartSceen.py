@@ -1,7 +1,10 @@
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.boxlayout import BoxLayout
+from kivy.app import App
 
+class TitleScreenWidget(BoxLayout):
+    pass
 
-class TitleScreenWidget(RelativeLayout):
+class TitleScreenApp(App):
     pass
 
 
@@ -9,4 +12,4 @@ class TitleScreenWidget(RelativeLayout):
 
 
 
-
+TitleScreenApp().run()
