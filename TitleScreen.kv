@@ -25,17 +25,45 @@ TitleScreenWidget:
             color: 1, .2, .1, 1
         Button:
             text:"Start"
+            font_name: "Fonts\GlitchGoblin.ttf"
             size_hint: 0.4, 0.1
             pos_hint: {'center_x': .5}
             background_color: 0, 0, 0, 0
         Button:
             text: "Controls"
             size_hint: 0.4, 0.1
+            font_name: "Fonts\GlitchGoblin.ttf"
             pos_hint: {'center_x': .5}
             background_color: 0, 0, 0, 0
+            on_press:root.Goto_controls_page()
         Button:
             text: "Settings"
+            font_name: "Fonts\GlitchGoblin.ttf"
             size_hint: 0.4, 0.1
             pos_hint: {'center_x': .5}
             background_color: 0, 0, 0, 0
 
+
+<ControlsWidget>:
+    orientation: "vertical"
+    Label:
+        text: "Basic Controls"
+        pos_hint: {'center_x': .5,"center_y":.1}
+        font_name: "Fonts\GlitchGoblin.ttf"
+        font_size: "80dp"
+    Label:
+        text: "Use arrow keys to move"
+        font_name: "Fonts\GlitchGoblin.ttf"
+    Label:
+        text: "Use Space to Jump"
+        font_name: "Fonts\GlitchGoblin.ttf"
+    Label:
+        text: "Use Shift to sprint"
+        font_name: "Fonts\GlitchGoblin.ttf"
+    Button:
+        text: "Back"
+        font_name: "Fonts\GlitchGoblin.ttf"
+        on_press: root.Back()
+        pos_hint: {'center_x': .5}
+        size_hint: 0.4, 1
+        background_color: 0, 0, 0, 0
