@@ -7,6 +7,7 @@ from kivy.graphics.context_instructions import Color
 from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
+from kivy.uix.button import Button
 
 def Navigate_to_Page(Page):
     app = App.get_running_app()
@@ -28,8 +29,7 @@ class BrightnessLevel(Widget):
         self.brightness = int(value)
     
     def return_brightness(self): return self.brightness
-    
-    
+   
 class TitleScreenWidget(AnchorLayout):
     Brightness_Manager = BrightnessLevel()
     def __init__(self,**kwargs):
@@ -45,8 +45,7 @@ class TitleScreenWidget(AnchorLayout):
         with self.canvas:
             Brightness = (100 - Brightness)/100
             Color(0,0,0,Brightness)
-            Rectangle(pos=(0,0),size=(Window.width,Window.height))
-    
+            Rectangle(pos=(0,0),size=(Window.width,Window.height))  
 
 class ControlsWidget(BoxLayout):
     Brightness_Manager = BrightnessLevel()
@@ -95,7 +94,20 @@ class SettingsWidget(GridLayout):
                 alpha = 100 - round(alpha)
                 self.ids.Brightness_Slider.value = alpha
             
-        
+class HoverButtons(Button):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        Window.bind(mouse_pos=self.on_hover)
+
+    def on_hover(self, window, pos):
+        if self.collide_point(*pos):
+            self.background_normal = ""
+            self.background_color = (1.0,1.0,1.0,1)
+            self.color = (0,0,0,1)
+        else:
+            self.background_color = (0,0,0,0)
+            self.color = (1,1,1,1)
+            self.background_normal = ""
 
 if __name__ == "__main__":
     class TitleScreenApp(App):
