@@ -28,13 +28,15 @@ class BrightnessLevel(Widget):
     def set_brightness(self, value):
         self.brightness = int(value)
     
-    def return_brightness(self): return self.brightness
+    def return_brightness(self): 
+        return self.brightness
    
 class TitleScreenWidget(AnchorLayout):
     Brightness_Manager = BrightnessLevel()
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Get_brightness(self.Brightness_Manager.return_brightness())
+
     def Goto_controls_page(self):
         Navigate_to_Page(ControlsWidget())
     def Goto_settings_page(self):

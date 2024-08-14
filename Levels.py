@@ -11,9 +11,9 @@ class MapWidget(Widget):
         self.Blocks = []
         self.Blocks_coords = []
         self.Tile_size = 32
+        self.Spawnpoint = ()
         self.Current_Level = "Graphics\Maps\Level1.tmx"
-        Window.bind(mouse_pos=self.on_hover)
-        self.Load_Level(self.Current_Level)
+        # Window.bind(mouse_pos=self.on_hover)
     
     def Load_Level(self,Level):
         Map = pytmx.TiledMap(Level)
@@ -33,15 +33,13 @@ class MapWidget(Widget):
                             self.Blocks_coords.append((x,y,size))
         for obj in Map.objects:
             if obj.name == "Spawn":
-                with self.canvas:
-                    image = CoreImage("Graphics\Sprites\sprite_8.png").texture
-                    Rectangle(pos=(obj.x,obj.y),size=(32,32),texture=image)
+                self.Spawnpoint = (obj.x,obj.y)
         
-    def on_hover(self, window, pos):
-        for block in self.Blocks_coords:
-            if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
-                print(block[0:2])
-                print(block[0] + block[2],block[1] + block[2])
+    # def on_hover(self, window, pos):
+    #     for block in self.Blocks_coords:
+    #         if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
+    #             print(block[0:2])
+    #             print(block[0] + block[2],block[1] + block[2])
     
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)
@@ -61,6 +59,7 @@ class MapWidget(Widget):
 if __name__ == "__main__":
     class MapApp(App):
         def build(self):
+            
             return MapWidget()
 
     MapApp().run()
