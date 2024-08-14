@@ -23,6 +23,11 @@ class MapWidget(Widget):
                     image = CoreImage(image[0]).texture
                     with self.canvas:
                         x,y,size = self.Tile_Transformation(x,y,layer)
+                        Rectangle(pos=(x,y),size=(size,size),texture=image)
+                else:
+                    image = CoreImage(image[0]).texture
+                    with self.canvas:
+                        x,y,size = self.Tile_Transformation(x,y,layer)
                         self.Blocks.append(Rectangle(pos=(x,y),size=(size,size),texture=image))
                         self.Blocks_coords.append((x,y,size))
     
@@ -36,8 +41,8 @@ class MapWidget(Widget):
         x_scale = Window.width/(layer.width *self.Tile_size)
         y_scale = Window.height/(layer.height * self.Tile_size)
         scale = max(x_scale,y_scale) # Figure out later
-        tr_x = x * self.Tile_size * scale
-        tr_y = (layer.height - y - 1) * self.Tile_size * scale 
+        tr_x = x * self.Tile_size * x_scale
+        tr_y = (layer.height - y - 1) * self.Tile_size * y_scale 
         size = self.Tile_size * scale
         return int(tr_x),int(tr_y),int(size)
 
