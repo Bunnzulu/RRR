@@ -14,13 +14,15 @@ class MainGameWidgets(RelativeLayout):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Map = MapWidget()
-
+        self.Player = Player()
     
     def on_start_click(self):
+        app = App.get_running_app()
+        print(app.root.children)
         self.Map.Load_Level()
+        self.remove_widget(self.ids.Start)
         self.add_widget(self.Map)
-        self.ids.Start.disabled = True
-        
+    
 
 class RRRApp(App):
     def build(self):
