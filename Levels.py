@@ -18,19 +18,25 @@ class MapWidget(Widget):
     def Load_Level(self,Level):
         Map = pytmx.TiledMap(Level)
         for layer in Map.layers:
-            for x,y,image in layer.tiles():
-                if layer.name == "Background":
-                    image = CoreImage(image[0]).texture
-                    with self.canvas:
-                        x,y,size = self.Tile_Transformation(x,y,layer)
-                        Rectangle(pos=(x,y),size=(size,size),texture=image)
-                else:
-                    image = CoreImage(image[0]).texture
-                    with self.canvas:
-                        x,y,size = self.Tile_Transformation(x,y,layer)
-                        self.Blocks.append(Rectangle(pos=(x,y),size=(size,size),texture=image))
-                        self.Blocks_coords.append((x,y,size))
-    
+            if layer.name != "Objects":
+                for x,y,image in layer.tiles():
+                    if layer.name == "Background":
+                        image = CoreImage(image[0]).texture
+                        with self.canvas:
+                            x,y,size = self.Tile_Transformation(x,y,layer)
+                            Rectangle(pos=(x,y),size=(size,size),texture=image)
+                    elif layer.name == "Main":
+                        image = CoreImage(image[0]).texture
+                        with self.canvas:
+                            x,y,size = self.Tile_Transformation(x,y,layer)
+                            self.Blocks.append(Rectangle(pos=(x,y),size=(size,size),texture=image))
+                            self.Blocks_coords.append((x,y,size))
+        for obj in Map.objects:
+            if obj.name == "Spawn":
+                with self.canvas:
+                    image = CoreImage("Graphics\Sprites\sprite_8.png").texture
+                    Rectangle(pos=(obj.x,obj.y),size=(32,32),texture=image)
+        
     def on_hover(self, window, pos):
         for block in self.Blocks_coords:
             if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
