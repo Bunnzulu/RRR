@@ -15,8 +15,8 @@ class MapWidget(Widget):
         self.Current_Level = "Graphics\Maps\Level1.tmx"
         # Window.bind(mouse_pos=self.on_hover)
     
-    def Load_Level(self,Level):
-        Map = pytmx.TiledMap(Level)
+    def Load_Level(self):
+        Map = pytmx.TiledMap(self.Current_Level)
         for layer in Map.layers:
             if layer.name != "Objects":
                 for x,y,image in layer.tiles():
@@ -54,7 +54,7 @@ class MapWidget(Widget):
         self.Blocks = []
         self.Blocks_coords = []
         self.canvas.clear()
-        self.Load_Level(self.Current_Level)
+        self.Load_Level()
 
 if __name__ == "__main__":
     class MapApp(App):
