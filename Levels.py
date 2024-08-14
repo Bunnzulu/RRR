@@ -11,34 +11,41 @@ class MapWidget(Widget):
         self.Blocks = []
         self.Blocks_coords = []
         self.Tile_size = 32
-        # Window.bind(mouse_pos=self.on_hover)
-        self.Load_Level("Graphics\Maps\Level1.tmx")
+        self.Current_Level = "Graphics\Maps\Level1.tmx"
+        Window.bind(mouse_pos=self.on_hover)
+        self.Load_Level(self.Current_Level)
     
     def Load_Level(self,Level):
         Map = pytmx.TiledMap(Level)
         for layer in Map.layers:
             for x,y,image in layer.tiles():
-                image = CoreImage(image[0]).texture
-                with self.canvas:
-                    x,y,size = self.Tile_Transformation(x,y,layer)
-                    self.Blocks.append(Rectangle(pos=(x,y),size=(size,size),texture=image))
-                    self.Blocks_coords.append(self.Tile_Transformation(x,y,layer))
-                    print(x,y,size)
+                if layer.name == "Background":
+                    image = CoreImage(image[0]).texture
+                    with self.canvas:
+                        x,y,size = self.Tile_Transformation(x,y,layer)
+                        self.Blocks.append(Rectangle(pos=(x,y),size=(size,size),texture=image))
+                        self.Blocks_coords.append((x,y,size))
     
-    # def on_hover(self, window, pos):
-    #     for block in self.Blocks_coords:
-    #         if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
-    #             print(block[0:2])
-    #             print(block[0] + 32,block[1] + 32)
+    def on_hover(self, window, pos):
+        for block in self.Blocks_coords:
+            if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
+                print(block[0:2])
+                print(block[0] + block[2],block[1] + block[2])
     
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)
         y_scale = Window.height/(layer.height * self.Tile_size)
-        scale = min(x_scale,y_scale)
+        scale = max(x_scale,y_scale) # Figure out later
         tr_x = x * self.Tile_size * scale
         tr_y = (layer.height - y - 1) * self.Tile_size * scale 
         size = self.Tile_size * scale
         return int(tr_x),int(tr_y),int(size)
+
+    def on_size(self,*args):
+        self.Blocks = []
+        self.Blocks_coords = []
+        self.canvas.clear()
+        self.Load_Level(self.Current_Level)
 
 if __name__ == "__main__":
     class MapApp(App):
