@@ -1,4 +1,4 @@
-
+from kivy.uix.widget import Widget
 from kivy.core.image import Image as CoreImage
 
 class Player():
@@ -27,6 +27,7 @@ class Player():
         self.image = self.player_idle_Forward
         self.Display_image = CoreImage(self.image).texture
         self.DrawnRect = ''
+        self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
         self.Borders = []
     
     def Input(self,key):
@@ -47,12 +48,19 @@ class Player():
         else:self.image = self.player_idle_Backward
 
     def Collision(self):
+        self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
         for border in self.Borders:
-            if self.Direction_y < 0 and border["left"][0] <= self.pos["x"] <= border["right"][0] and self.pos["y"] == border["topleft"][1]:
-                if self.pos["y"] <= border["top"][1]:
-                    self.pos["y"] = border["top"][1]
-                    self.inair = False
-                    print("Collide",border["top"][1],border["topleft"][1],self.pos["y"])
+            if self.CollideWiget.collide_widget(border):
+                if self.Direction_y < 0:
+                    if self.pos["y"] < border.pos[1]+border.size[1]:
+                        self.pos["y"] = border.pos[1]+border.size[1]
+                        self.inair = False
+                        self.Direction_y = 0
+                elif self.Direction_y > 0:
+                    if self.pos["y"] + self.Height > border.pos[1]:
+                        self.pos["y"] = border.pos[1] - self.Height
+                        self.inair = False
+                        # self.Direction_y = 0
 
     def Animations(self):
         if not self.inair:
@@ -87,8 +95,8 @@ class Player():
     
     def update(self):
         self.Animations()
-        self.gravity()
         self.Collision()
+        self.gravity()
         self.Display_image = CoreImage(self.image).texture
         self.pos["x"] += self.Direction_x
         self.pos["y"] += self.Direction_y
