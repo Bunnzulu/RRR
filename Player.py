@@ -49,18 +49,29 @@ class Player():
 
     def Collision(self):
         self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
+        #Vertical
         for border in self.Borders:
             if self.CollideWiget.collide_widget(border):
-                if self.Direction_y < 0:
-                    if self.pos["y"] < border.pos[1]+border.size[1]:
-                        self.pos["y"] = border.pos[1]+border.size[1]
+                if self.Direction_y < 0 and border.y < self.pos["y"] < border.top:
+                    if self.pos["y"] < border.top:
+                        self.pos["y"] = border.top
                         self.inair = False
                         self.Direction_y = 0
                 elif self.Direction_y > 0:
-                    if self.pos["y"] + self.Height > border.pos[1]:
-                        self.pos["y"] = border.pos[1] - self.Height
-                        self.inair = False
-                        # self.Direction_y = 0
+                    if self.CollideWiget.top > border.y and self.pos["y"] < border.y:
+                        self.pos["y"] = border.y - self.Height
+                        self.Direction_y = 0
+        #Horizontal
+        for border in self.Borders:
+            if self.CollideWiget.collide_widget(border):
+                if self.Direction_x < 0 and border.y < self.CollideWiget.center_y < border.top:
+                    if self.pos["x"] < border.right:
+                        self.pos["x"] = border.right
+                        self.Direction_x = 0
+                elif self.Direction_x > 0:
+                    if self.pos["x"] > border.x and border.y < self.CollideWiget.center_y < border.top:
+                        self.pos["x"] = border.x - self.Width
+                        self.Direction_x = 0
 
     def Animations(self):
         if not self.inair:
@@ -91,6 +102,7 @@ class Player():
                 self.BRunningIndex = 0
 
     def gravity(self):
+        # if self.inair:
         self.Direction_y -= 1
     
     def update(self):
