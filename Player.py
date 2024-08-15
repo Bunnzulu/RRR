@@ -37,8 +37,8 @@ class Player():
             self.Direction_x = self.Walkspeed
             self.Forward = True
         elif key == "spacebar":
+            self.Direction_y = 10
             self.inair = True
-            self.Direction_y = 4
     
     def Movement_Reset(self):
         self.Direction_x = 0
@@ -48,7 +48,11 @@ class Player():
 
     def Collision(self):
         for border in self.Borders:
-            pass
+            if self.Direction_y < 0 and border["left"][0] <= self.pos["x"] <= border["right"][0] and self.pos["y"] == border["topleft"][1]:
+                if self.pos["y"] <= border["top"][1]:
+                    self.pos["y"] = border["top"][1]
+                    self.inair = False
+                    print("Collide",border["top"][1],border["topleft"][1],self.pos["y"])
 
     def Animations(self):
         if not self.inair:
@@ -79,8 +83,7 @@ class Player():
                 self.BRunningIndex = 0
 
     def gravity(self):
-        if self.inair:
-            self.Direction_y -= 1
+        self.Direction_y -= 1
     
     def update(self):
         self.Animations()

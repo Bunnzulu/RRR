@@ -53,8 +53,17 @@ class MapWidget(Widget):
         size = self.Tile_size * scale
         return int(tr_x),int(tr_y),int(size)
     
-    def Add_Block(x,y,size): # This needs to get a blocks top,left,right,bottom
-        pass 
+    def Add_Block(self,x,y,size): # This needs to get a blocks top,left,right,bottom
+        topleft = (x,y+size)
+        topright = (x+size,y+size)
+        bottomleft = (x,y)
+        bottomright = (x+size,y)
+        top = (size,y+size)
+        left = (x,size)
+        right = (x+size,size)
+        bottom = (size,y)
+        Rect = {"topleft":topleft,"topright":topright,"bottomleft":bottomleft,"bottomright":bottomright,"top":top,"left":left,"right":right,"bottom":bottom}
+        self.Blocks.append(Rect)
 
     def on_size(self,*args):
         self.Blocks = []
