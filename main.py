@@ -44,7 +44,7 @@ class MainGameWidgets(RelativeLayout):
         self._keyboard = None
 
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
-        self.Player.Input(keycode[1])
+        self.Player.Input(keycode)
         return True
 
     def on_keyboard_up(self,keyboard,keycode):

@@ -30,16 +30,23 @@ class Player():
         self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
         self.Borders = []
     
-    def Input(self,key):
-        if key == "left":
+    def Input(self,keycode):
+        if keycode[1] == "left":
             self.Direction_x = -self.Walkspeed
             self.Forward = False
-        elif key == "right":
+        elif keycode[1] == "right":
             self.Direction_x = self.Walkspeed
             self.Forward = True
-        elif key == "spacebar":
+        elif keycode[1] == "spacebar" and not self.inair:
             self.Direction_y = 10
             self.inair = True
+            print("Death")
+        elif keycode[1] == 'shift':
+            self.Direction_x = -self.SprintSpeed
+            self.Forward = False
+        elif keycode[1] == 'rshift':
+            self.Direction_x = self.SprintSpeed
+            self.Forward = True
     
     def Movement_Reset(self):
         self.Direction_x = 0
@@ -52,24 +59,24 @@ class Player():
         #Vertical
         for border in self.Borders:
             if self.CollideWiget.collide_widget(border):
-                if self.Direction_y < 0 and border.y < self.pos["y"] < border.top:
-                    if self.pos["y"] < border.top:
+                if self.Direction_y < 0: #Falling
+                    if self.pos["y"] < border.top <= self.CollideWiget.top:
                         self.pos["y"] = border.top
                         self.inair = False
                         self.Direction_y = 0
                 elif self.Direction_y > 0:
-                    if self.CollideWiget.top > border.y and self.pos["y"] < border.y:
+                    if self.CollideWiget.top > border.y > self.pos["y"] and border.x < self.CollideWiget.center_x < border.right:
                         self.pos["y"] = border.y - self.Height
                         self.Direction_y = 0
         #Horizontal
         for border in self.Borders:
             if self.CollideWiget.collide_widget(border):
-                if self.Direction_x < 0 and border.y < self.CollideWiget.center_y < border.top:
-                    if self.pos["x"] < border.right:
+                if self.Direction_x < 0:
+                    if self.CollideWiget.x < border.right <= self.CollideWiget.right and border.y < self.CollideWiget.center_y < border.top:
                         self.pos["x"] = border.right
                         self.Direction_x = 0
                 elif self.Direction_x > 0:
-                    if self.pos["x"] > border.x and border.y < self.CollideWiget.center_y < border.top:
+                    if border.y < self.CollideWiget.center_y < border.top and self.CollideWiget.right > border.x >= self.CollideWiget.x:
                         self.pos["x"] = border.x - self.Width
                         self.Direction_x = 0
 
@@ -89,6 +96,20 @@ class Player():
                 self.FWalkIndex = 0
                 self.FRunningIndex = 0
                 self.BRunningIndex = 0
+            elif self.Direction_x == self.SprintSpeed:
+                self.FRunningIndex += 0.1
+                if self.FRunningIndex >= len(self.FRunning): self.FRunningIndex = 0
+                self.image = f"Graphics\\Sprites\\{self.FRunning[int(self.FRunningIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FWalkIndex = 0
+                self.BRunningIndex = 0
+            elif self.Direction_x == -self.SprintSpeed:
+                self.BRunningIndex += 0.1
+                if self.BRunningIndex >= len(self.BRunning): self.BRunningIndex = 0
+                self.image = f"Graphics\\Sprites\\{self.BRunning[int(self.BRunningIndex)]}.png"
+                self.FWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BWalkIndex = 0
         else:
             if self.Direction_x == self.Walkspeed:
                 self.image = self.player_fjump
@@ -102,7 +123,6 @@ class Player():
                 self.BRunningIndex = 0
 
     def gravity(self):
-        # if self.inair:
         self.Direction_y -= 1
     
     def update(self):
