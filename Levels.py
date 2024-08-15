@@ -8,7 +8,7 @@ from kivy.core.image import Image as CoreImage
 class MapWidget(Widget):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
-        self.Blocks = []
+        self.Blocks = [] # Use for Collsions
         self.Blocks_coords = []
         self.Tile_size = 32
         self.Spawnpoint = ()
@@ -25,13 +25,14 @@ class MapWidget(Widget):
                         with self.canvas:
                             x,y,size = self.Tile_Transformation(x,y,layer)
                             Rectangle(pos=(x,y),size=(size,size),texture=image)
-                            self.Blocks_coords.append((x,y,size))
+                            # self.Blocks_coords.append((x,y,size))
                     elif layer.name == "Main":
                         image = CoreImage(image[0]).texture
                         with self.canvas:
                             x,y,size = self.Tile_Transformation(x,y,layer)
-                            self.Blocks.append(Rectangle(pos=(x,y),size=(size,size),texture=image))
-                            self.Blocks_coords.append((x,y,size))
+                            Rectangle(pos=(x,y),size=(size,size),texture=image)
+                            self.Add_Block(x,y,size)
+                            # self.Blocks_coords.append((x,y,size))
         for obj in Map.objects:
             if obj.name == "Spawn":
                 self.Spawnpoint = (obj.x,int(((Map.height*self.Tile_size)-obj.y)*Window.height/(Map.layers[0].height*self.Tile_size)))
@@ -51,6 +52,9 @@ class MapWidget(Widget):
         tr_y = (layer.height - y - 1) * self.Tile_size * y_scale 
         size = self.Tile_size * scale
         return int(tr_x),int(tr_y),int(size)
+    
+    def Add_Block(x,y,size): # This needs to get a blocks top,left,right,bottom
+        pass 
 
     def on_size(self,*args):
         self.Blocks = []

@@ -29,6 +29,7 @@ class MainGameWidgets(RelativeLayout):
         self.add_widget(self.Map)
         self.Map.Load_Level()
         self.Game_start = True
+        self.Player.Borders = self.Map.Blocks
         self.Player_Spawn()
     
     def Player_Spawn(self):
