@@ -28,9 +28,18 @@ class Player():
         self.Display_image = CoreImage(self.image).texture
         self.DrawnRect = ''
     
-    def Input(self,input):
-        pass
+    def Input(self,key):
+        if key == "left":
+            self.Direction_x = -self.Walkspeed
+            self.Forward = False
+        elif key == "right":
+            self.Direction_x = self.Walkspeed
+            self.Forward = True
     
+    def Movement_Reset(self):
+        self.Direction_x = 0
+        self.Direction_y = 0
+
     def Animation(self):
         pass
 
