@@ -18,6 +18,7 @@ class MainGameWidgets(RelativeLayout):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Map = MapWidget()
+        self.Old_Window_Size = [Window.width,Window.height]
         self.Player = Player()
         self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
         self._keyboard.bind(on_key_down=self.on_keyboard_down)
@@ -51,15 +52,33 @@ class MainGameWidgets(RelativeLayout):
         self.Player.Movement_Reset()
         return True
 
+    def Death(self):
+        if (self.Player.pos["x"] < 0 or self.Player.pos["x"] > Window.width) or (self.Player.pos["y"] < 0 or self.Player.pos["y"] > Window.height):
+            self.Player.pos["x"] = self.Map.Spawnpoint[0]
+            self.Player.pos["y"] = self.Map.Spawnpoint[1]
+            self.Redraw_Player()
+
     def Redraw_Player(self):
         self.Map.canvas.after.children.remove(self.Player.DrawnRect)
         with self.Map.canvas.after:
             self.Player.DrawnRect = Rectangle(pos=(self.Player.pos["x"],self.Player.pos["y"]),size=(self.Player.Width,self.Player.Height),texture=self.Player.Display_image)
 
+    def Window_Change(self):
+        if self.Map.Map and self.Map.Window_change:
+            x_ratio = self.Player.pos["x"]/self.Old_Window_Size[0]
+            y_ratio = self.Player.pos["y"]/self.Old_Window_Size[1]
+            self.Player.pos["x"] = int(x_ratio*Window.width)
+            self.Player.pos["y"] = int(y_ratio*Window.height)
+            self.Player.Borders = self.Map.Blocks
+            self.Map.Window_change = False
+            self.Old_Window_Size = [Window.width,Window.height]
+
     def update(self,dt):
         if self.Game_start:
             self.Player.update()
+            self.Window_Change()
             self.Redraw_Player()
+            self.Death()
 
 class RRRApp(App):
     def build(self):
