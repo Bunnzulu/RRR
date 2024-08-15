@@ -11,7 +11,6 @@ from kivy.uix.button import Button
 
 def Navigate_to_Page(Page):
     app = App.get_running_app()
-    print(app.root.children)
     app.root.clear_widgets()
     app.root.add_widget(Page)
 

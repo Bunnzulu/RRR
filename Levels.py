@@ -25,6 +25,7 @@ class MapWidget(Widget):
                         with self.canvas:
                             x,y,size = self.Tile_Transformation(x,y,layer)
                             Rectangle(pos=(x,y),size=(size,size),texture=image)
+                            self.Blocks_coords.append((x,y,size))
                     elif layer.name == "Main":
                         image = CoreImage(image[0]).texture
                         with self.canvas:
@@ -33,7 +34,8 @@ class MapWidget(Widget):
                             self.Blocks_coords.append((x,y,size))
         for obj in Map.objects:
             if obj.name == "Spawn":
-                self.Spawnpoint = (obj.x,obj.y)
+                self.Spawnpoint = (obj.x,int(((Map.height*self.Tile_size)-obj.y)*Window.height/(Map.layers[0].height*self.Tile_size)))
+                # print(self.Spawnpoint)
         
     # def on_hover(self, window, pos):
     #     for block in self.Blocks_coords:

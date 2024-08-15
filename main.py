@@ -2,6 +2,7 @@ from kivy.app import App
 # from kivy.uix.widget import Widget
 from kivy.lang import Builder
 from kivy.uix.relativelayout import RelativeLayout
+from kivy.graphics.vertex_instructions import Rectangle
 #Other files
 from StartSceen import TitleScreenWidget
 from Player import Player
@@ -17,12 +18,19 @@ class MainGameWidgets(RelativeLayout):
         self.Player = Player()
     
     def on_start_click(self):
-        app = App.get_running_app()
-        print(app.root.children)
-        self.Map.Load_Level()
-        self.remove_widget(self.ids.Start)
+        self.clear_widgets()
         self.add_widget(self.Map)
+        self.Map.Load_Level()
+        self.Player_Spawn()
     
+    def Player_Spawn(self):
+        with self.Map.canvas.after:
+            self.Player.pos["x"] = self.Map.Spawnpoint[0]
+            self.Player.pos["y"] = self.Map.Spawnpoint[1]
+            self.Player.DrawnRect = Rectangle(pos=(self.Player.pos["x"],self.Player.pos["y"]),size=(self.Player.Width,self.Player.Height),texture=self.Player.Display_image)
+
+    def update(self):
+        pass
 
 class RRRApp(App):
     def build(self):

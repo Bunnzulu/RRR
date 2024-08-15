@@ -3,7 +3,9 @@ from kivy.core.image import Image as CoreImage
 
 class Player():
     def __init__(self):
-        self.position = {"x":0,"y":0}
+        self.pos = {"x":0,"y":0}
+        self.Width = 32
+        self.Height = 32
         self.player_idle_Forward = "Graphics\\Sprites\\IdleF.png"
         self.player_idle_Backward = "Graphics\\Sprites\\IdleB.png"
         self.player_fjump = "Graphics\\Sprites\\FJump.png"
@@ -23,7 +25,8 @@ class Player():
         self.Forward = True
         self.inair = False
         self.image = self.player_idle_Forward
-        self.Display_image = self.image
+        self.Display_image = CoreImage(self.image).texture
+        self.DrawnRect = ''
     
     def Input(self,input):
         pass
@@ -38,5 +41,5 @@ class Player():
     def update(self):
         self.Display_image = CoreImage(self.image).texture
         self.gravity()
-        self.position["x"] += self.Direction_x
-        self.position["y"] += self.Direction_y
+        self.pos["x"] += self.Direction_x
+        self.pos["y"] += self.Direction_y
