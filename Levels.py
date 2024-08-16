@@ -3,10 +3,13 @@ from kivy.uix.widget import Widget
 import pytmx
 from kivy.core.window import Window
 from kivy.graphics.vertex_instructions import Rectangle
+from kivy.graphics.context_instructions import Color
 from kivy.core.image import Image as CoreImage
+from StartSceen import BrightnessLevel
 
 class MapWidget(Widget):
     Map = None
+    Brightness_Manager = BrightnessLevel()
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Blocks = [] # Use for Collsions
@@ -15,6 +18,8 @@ class MapWidget(Widget):
         self.Spawnpoint = ()
         self.Window_change = False
         self.Current_Level = "Graphics\Maps\Level1.tmx"
+        self.BrightRect = None
+        self.BrightColor = None
         # Window.bind(mouse_pos=self.on_hover)
     
     def Load_Level(self):
@@ -40,6 +45,18 @@ class MapWidget(Widget):
                 y_ratio = obj.y/(self.Map.layers[0].height *32)
                 x_ratio = obj.x/(self.Map.layers[0].width *32)
                 self.Spawnpoint = (int(x_ratio*Window.width),int(Window.height*y_ratio))
+        self.Get_brightness(self.Brightness_Manager.return_brightness())
+
+    def Get_brightness(self,Brightness):
+        try:
+            if self.BrightColor:
+                self.canvas.children.remove(self.BrightColor)
+                self.canvas.children.remove(self.BrightRect)
+        except:pass
+        with self.canvas:
+            Brightness = (100 - Brightness)/100
+            self.BrightColor = Color(0,0,0,Brightness)
+            self.BrightRect = Rectangle(pos=(0,0),size=(Window.width,Window.height))
 
     # def on_hover(self, window, pos):
     #     for block in self.Blocks_coords:
