@@ -1,6 +1,8 @@
 # RRR
- In progress
- Use pip -r requirements.txt to get needed libraries
- Preview:
+ Use pip -r requirements.txt to get needed libraries. Then run main.py
+# Preview:
  <img src="Preview\IMG_2379.jpg">
- <img src="Preview\IMG_2380.jpg">
+ <img src="Preview\IMG_2380.jpg"><br>
+
+# Info
+ An in-progress game. <br>So far you can only play around with brightness, start the game and die. Daily updates
