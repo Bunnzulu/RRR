@@ -17,12 +17,12 @@ Builder.load_file("titlescreen.kv")
 
 class MainGameWidgets(RelativeLayout):
     Game_start = False
+    PMenu = None
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Map = MapWidget()
         self.Old_Window_Size = [Window.width,Window.height]
         self.Player = Player()
-        # self.PMenu = PauseWidgets()
         self.Pause = False
         self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
         self._keyboard.bind(on_key_down=self.on_keyboard_down)
@@ -31,6 +31,7 @@ class MainGameWidgets(RelativeLayout):
     
     def on_start_click(self):
         self.clear_widgets()
+        Builder.unload_file("titlescreen.kv")
         self.add_widget(self.Map)
         self.Old_Window_Size = [Window.width,Window.height]
         self.Map.Load_Level()
@@ -38,6 +39,11 @@ class MainGameWidgets(RelativeLayout):
         self.Player.Borders = self.Map.Blocks
         self.Player_Spawn()
     
+    def on_pause_back_click(self):
+        self.Pause = False
+        Builder.unload_file("PMenu.kv")
+        self.remove_widget(self.PMenu)
+
     def Player_Spawn(self):
         with self.Map.canvas.after:
             self.Player.pos["x"] = self.Map.Spawnpoint[0]
@@ -54,8 +60,8 @@ class MainGameWidgets(RelativeLayout):
             if keycode[1] == "p" and not self.Pause:
                 self.Pause = True
                 Builder.load_file("PMenu.kv")
-                self.add_widget(PauseWidgets())# Changed it from self.PMenu
-                return 
+                self.PMenu = PauseWidgets()
+                self.add_widget(self.PMenu)
             if not self.Pause:
                 self.Player.Input(keycode)
         return True

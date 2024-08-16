@@ -6,10 +6,10 @@ class Player():
         self.pos = {"x":0,"y":0}
         self.Width = 32
         self.Height = 32
-        self.player_idle_Forward = "Graphics\\Sprites\\IdleF.png"
-        self.player_idle_Backward = "Graphics\\Sprites\\IdleB.png"
-        self.player_fjump = "Graphics\\Sprites\\FJump.png"
-        self.player_bjump = "Graphics\\Sprites\\BJump.png"
+        self.player_idle_Forward = "Graphics\\\Sprites\\\IdleF.png"
+        self.player_idle_Backward = "Graphics\\\Sprites\\\IdleB.png"
+        self.player_fjump = "Graphics\\\Sprites\\\FJump.png"
+        self.player_bjump = "Graphics\\\Sprites\\\BJump.png"
         self.FWalking = ["FRun1","FRun3"]
         self.FRunning = ["FRun1","FRun2","FRun3","FRun4"]
         self.BWalking = ["BRun1","BRun3"]
@@ -85,28 +85,28 @@ class Player():
             if self.Direction_x == self.Walkspeed:
                 self.FWalkIndex += 0.1
                 if self.FWalkIndex >= len(self.FWalking): self.FWalkIndex = 0
-                self.image = f"Graphics\\Sprites\\{self.FWalking[int(self.FWalkIndex)]}.png"
+                self.image = f"Graphics\\\Sprites\\\{self.FWalking[int(self.FWalkIndex)]}.png"
                 self.BWalkIndex = 0
                 self.FRunningIndex = 0
                 self.BRunningIndex = 0
             elif self.Direction_x == -self.Walkspeed:
                 self.BWalkIndex += 0.1
                 if self.BWalkIndex >= len(self.BWalking): self.BWalkIndex = 0
-                self.image = f"Graphics\\Sprites\\{self.BWalking[int(self.BWalkIndex)]}.png"
+                self.image = f"Graphics\\\Sprites\\\{self.BWalking[int(self.BWalkIndex)]}.png"
                 self.FWalkIndex = 0
                 self.FRunningIndex = 0
                 self.BRunningIndex = 0
             elif self.Direction_x == self.SprintSpeed:
                 self.FRunningIndex += 0.1
                 if self.FRunningIndex >= len(self.FRunning): self.FRunningIndex = 0
-                self.image = f"Graphics\\Sprites\\{self.FRunning[int(self.FRunningIndex)]}.png"
+                self.image = f"Graphics\\\Sprites\\\{self.FRunning[int(self.FRunningIndex)]}.png"
                 self.BWalkIndex = 0
                 self.FWalkIndex = 0
                 self.BRunningIndex = 0
             elif self.Direction_x == -self.SprintSpeed:
                 self.BRunningIndex += 0.1
                 if self.BRunningIndex >= len(self.BRunning): self.BRunningIndex = 0
-                self.image = f"Graphics\\Sprites\\{self.BRunning[int(self.BRunningIndex)]}.png"
+                self.image = f"Graphics\\\Sprites\\\{self.BRunning[int(self.BRunningIndex)]}.png"
                 self.FWalkIndex = 0
                 self.FRunningIndex = 0
                 self.BWalkIndex = 0

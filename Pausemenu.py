@@ -1,5 +1,5 @@
 from kivy.uix.relativelayout import RelativeLayout
-# from kivy.uix.widget import Widget
+from kivy.uix.widget import Widget
 from kivy.uix.boxlayout import BoxLayout
 from kivy.app import App
 from kivy.core.window import Window
@@ -9,9 +9,9 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.graphics.context_instructions import Color
 
-def Navigate_to_Page(Page): #Temp function
+def Navigate_to_Page(self,Page): #Temp function
     app = App.get_running_app()
-    app.root.clear_widgets()
+    app.root.remove_widget(self)
     app.root.add_widget(Page)
 
 class PauseWidgets(RelativeLayout):
@@ -20,10 +20,10 @@ class PauseWidgets(RelativeLayout):
         super().__init__(**kwargs)
         self.Get_brightness(self.Brightness_Manager.return_brightness())
     def Goto_Settings(self):
-        Navigate_to_Page(SettingsWidget())
+        Navigate_to_Page(self,SettingsWidget())
     
     def Goto_Controls(self):
-        Navigate_to_Page(ControlsWidget())
+        Navigate_to_Page(self,ControlsWidget())
     
     def Get_brightness(self,Brightness):
         if len(self.canvas.children) > 0:
@@ -49,18 +49,20 @@ class HoverButtons(Button):
             self.background_normal = ""
 
 
-class SettingsWidget(GridLayout):
+class SettingsWidget(Widget):
     Brightness_Manager = BrightnessLevel()
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Get_brightness(self.Brightness_Manager.return_brightness())
         self.Show_Brightness()
+    
     def Back(self):
-        Navigate_to_Page(PauseWidgets())
+        Navigate_to_Page(self,PauseWidgets())
         self.Get_brightness(self.Brightness_Manager.return_brightness())
     
     def Change_brightness(self,widget):
         self.Brightness_Manager.set_brightness(int(widget.value))
+        self.canvas.children = self.canvas.children[:-3]
         self.Get_brightness(self.Brightness_Manager.return_brightness())
     
     def Get_brightness(self,Brightness):
@@ -86,7 +88,7 @@ class ControlsWidget(BoxLayout):
         self.Get_brightness(self.Brightness_Manager.return_brightness())
     
     def Back(self):
-        Navigate_to_Page(PauseWidgets())
+        Navigate_to_Page(self,PauseWidgets())
 
     def Get_brightness(self,Brightness):
         if len(self.canvas.children) > 0:

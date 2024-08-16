@@ -17,7 +17,7 @@ class MapWidget(Widget):
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Current_Level = "Graphics\Maps\Level1.tmx"
+        self.Current_Level = "Graphics\\Maps\\Level1.tmx"
         self.BrightRect = None
         self.BrightColor = None
         # Window.bind(mouse_pos=self.on_hover)
