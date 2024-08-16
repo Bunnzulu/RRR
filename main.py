@@ -29,6 +29,7 @@ class MainGameWidgets(RelativeLayout):
     def on_start_click(self):
         self.clear_widgets()
         self.add_widget(self.Map)
+        self.Old_Window_Size = [Window.width,Window.height]
         self.Map.Load_Level()
         self.Game_start = True
         self.Player.Borders = self.Map.Blocks

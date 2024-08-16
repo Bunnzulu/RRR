@@ -50,7 +50,7 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="1" name="Spawn" x="160" y="349.251">
+  <object id="1" name="Spawn" x="47.7193" y="347.006">
    <point/>
   </object>
  </objectgroup>
