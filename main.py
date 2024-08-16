@@ -4,6 +4,7 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.core.window import Window
 from kivy.properties import Clock
+from kivy.graphics.context_instructions import Color
 # from kivy.uix.widget import Widget
 #Other files
 from StartSceen import TitleScreenWidget
@@ -61,6 +62,7 @@ class MainGameWidgets(RelativeLayout):
     def Redraw_Player(self):
         self.Map.canvas.after.children.remove(self.Player.DrawnRect)
         with self.Map.canvas.after:
+            Color(1,1,1,1)
             self.Player.DrawnRect = Rectangle(pos=(self.Player.pos["x"],self.Player.pos["y"]),size=(self.Player.Width,self.Player.Height),texture=self.Player.Display_image)
 
     def Window_Change(self):
