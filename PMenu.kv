@@ -1,12 +1,39 @@
 PauseWidgets:
 
+<HoverButtons>:
+    font_name: "Fonts\GlitchGoblin.ttf"
+    size_hint: 1, 1
+    pos_hint: {'center_x': .5}
+    background_color: 0, 0, 0, 0
+
 
 <PauseWidgets>:
     canvas:
+        Color: 
+            rgba: 0,0,0,0.5
         Rectangle:
             size: root.size
-            Color: 
-                rgba: 0,0,0,1
     Image:
         source: "Graphics\GUI\Sci-Fi UI Game Asset Pack\green assets\panels\panel-2.png"
+        allow_stretch: True
+        keep_ratio: False
+        size_hint: .8, .8
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+        size_hint: .8, .8
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        Label:
+            text:"Game Paused"
+            color: 1,1,1,1
+            font_name: "Fonts\GlitchGoblin.ttf"
+            font_size: "80dp"
+        HoverButtons:
+            text:"Settings"
+        HoverButtons:
+            text:"Controls"
+        HoverButtons:
+            text:"Back"
         
