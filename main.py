@@ -14,7 +14,6 @@ from Pausemenu import PauseWidgets
 #--------
 
 Builder.load_file("titlescreen.kv")
-Builder.load_file("PMenu.kv")
 
 class MainGameWidgets(RelativeLayout):
     Game_start = False
@@ -23,7 +22,7 @@ class MainGameWidgets(RelativeLayout):
         self.Map = MapWidget()
         self.Old_Window_Size = [Window.width,Window.height]
         self.Player = Player()
-        self.PMenu = PauseWidgets()
+        # self.PMenu = PauseWidgets()
         self.Pause = False
         self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
         self._keyboard.bind(on_key_down=self.on_keyboard_down)
@@ -32,7 +31,6 @@ class MainGameWidgets(RelativeLayout):
     
     def on_start_click(self):
         self.clear_widgets()
-        Builder.unload_file("titlescreen.kv")
         self.add_widget(self.Map)
         self.Old_Window_Size = [Window.width,Window.height]
         self.Map.Load_Level()
@@ -55,9 +53,9 @@ class MainGameWidgets(RelativeLayout):
         if self.Game_start:
             if keycode[1] == "p" and not self.Pause:
                 self.Pause = True
-                self.remove_widget(self.Map)
-                self.add_widget(self.PMenu)
-                print()
+                Builder.load_file("PMenu.kv")
+                self.add_widget(PauseWidgets())# Changed it from self.PMenu
+                return 
             if not self.Pause:
                 self.Player.Input(keycode)
         return True
