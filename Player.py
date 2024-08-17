@@ -11,12 +11,16 @@ class Player():
         self.player_idle_Backward = "Graphics\\Sprites\\IdleB.png"
         self.player_fjump = "Graphics\\Sprites\\FJump.png"
         self.player_bjump = "Graphics\\Sprites\\BJump.png"
+        self.FCooldown = "Graphics\\Sprites\\Cooldown.png"
+        self.BCooldown = "Graphics\\Sprites\\BCooldown.png"
+        self.TCooldown = "Graphics\\Sprites\\TCooldown.png"
         self.FWalking = ["FRun1","FRun3"]
         self.FRunning = ["FRun1","FRun2","FRun3","FRun4"]
         self.BWalking = ["BRun1","BRun3"]
         self.BRunning = ["BRun1","BRun2","BRun3","BRun4"]
         self.FShooting = ["FShoot1","FShoot2","FShoot3"]
-        # self.FShooting = ["FShoot1","FShoot2","FShoot3"]
+        self.BShooting = ["BShoot1","BShoot2","BShoot3"]
+        self.TShooting = ["TShoot1","TShoot2","TShoot3"]
         self.Direction_x = 0
         self.Direction_y = 0
         self.FWalkIndex = 0
@@ -24,6 +28,8 @@ class Player():
         self.FRunningIndex = 0
         self.BRunningIndex = 0
         self.FShootingIndex = 0
+        self.BShootingIndex = 0
+        self.TShootingIndex = 0
         self.Walkspeed = 1
         self.SprintSpeed = self.Walkspeed * 2
         self.Forward = True
@@ -36,10 +42,12 @@ class Player():
         self.Ammo = 500
         self.Gun = "SMG"
         self.GunFacter = {"SMG":3}
+        self.GunCooldown = {"SMG":60}
         self.BaseFactor = 10
         self.mousepos = ()
         self.Recoil = [0,0]
         self.Death = False
+        self.Cooldown = self.GunCooldown[self.Gun]
     
     def Input(self,keycode):
         if keycode[1] == "left":
@@ -64,7 +72,10 @@ class Player():
     def Movement_Reset(self):
         self.Direction_x = 0
         self.Direction_y = 0
-        if self.Forward:self.image = self.player_idle_Forward
+        if self.Cooldown > 0:
+            if self.Forward:self.image = self.FCooldown
+            else:self.image = self.BCooldown
+        elif self.Forward:self.image = self.player_idle_Forward
         else:self.image = self.player_idle_Backward
 
     def Collision(self):
@@ -95,9 +106,9 @@ class Player():
     def Shoot(self):
         if self.mousepos[0] < Window.width/2:
             self.Recoil[0] = (self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[0] >= Window.width/2:
+        if self.mousepos[0] == Window.width/2:
             self.Recoil[0] = -(self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[1] >= Window.height/2:
+        if self.mousepos[1] == Window.height/2:
             self.Recoil[1] = -(self.BaseFactor * self.GunFacter[self.Gun])
         if self.mousepos[1] < Window.height/2:
             self.Recoil[1] = (self.BaseFactor * self.GunFacter[self.Gun])
@@ -146,12 +157,37 @@ class Player():
                 self.FRunningIndex = 0
                 self.BRunningIndex = 0
         elif self.Recoil.count(0) != 2:
-            if self.Recoil[0] < 0: #and self.Recoil[1] == 0:
-                self.FShootingIndex += 0.1
+            if self.Recoil[0] < 0 and self.Recoil[1] == 0:
+                self.FShootingIndex += 0.4
                 if self.FShootingIndex >= len(self.FShooting): 
                     self.Recoil = [0,0]
-                    self.image = f"Graphics\\Sprites\\{self.FShooting[int(self.FShootingIndex)]}.png"
+                    self.image = self.FCooldown
+                    self.FShootingIndex = 0
+                    self.Forward = True
                 else:self.image = f"Graphics\\Sprites\\{self.FShooting[int(self.FShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[0] > 0 and self.Recoil[1] == 0:
+                self.BShootingIndex += 0.4
+                if self.BShootingIndex >= len(self.BShooting): 
+                    self.Recoil = [0,0]
+                    self.image = self.BCooldown
+                    self.BShootingIndex = 0
+                    self.Forward = False
+                else:self.image = f"Graphics\\Sprites\\{self.BShooting[int(self.BShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[1] < 0 and self.Recoil[0] == 0:
+                self.TShootingIndex += 0.4
+                if self.TShootingIndex >= len(self.TShooting): 
+                    self.Recoil = [0,0]
+                    self.image = self.TCooldown
+                    self.TShootingIndex = 0
+                else:self.image = f"Graphics\\Sprites\\{self.TShooting[int(self.TShootingIndex)]}.png"
                 self.BWalkIndex = 0
                 self.FRunningIndex = 0
                 self.BRunningIndex = 0
