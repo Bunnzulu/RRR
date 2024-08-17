@@ -28,6 +28,7 @@ class MainGameWidgets(RelativeLayout):
         self._keyboard.bind(on_key_down=self.on_keyboard_down)
         self._keyboard.bind(on_key_up=self.on_keyboard_up)
         Clock.schedule_interval(self.update,1/60)
+        Window.bind(mouse_pos=self.Mouse_Motion)
     
     def on_start_click(self):
         self.clear_widgets()
@@ -55,6 +56,9 @@ class MainGameWidgets(RelativeLayout):
         self._keyboard.unbind(on_key_up=self.on_keyboard_up)
         self._keyboard = None
 
+    def Mouse_Motion(self, window, pos):
+        self.Player.mousepos = pos
+
     def on_keyboard_down(self, keyboard, keycode, text, modifiers):
         if self.Game_start:
             if keycode[1] == "p" and not self.Pause:
@@ -70,11 +74,16 @@ class MainGameWidgets(RelativeLayout):
         self.Player.Movement_Reset()
         return True
 
-    def Death(self):
+    def Borders(self):
         if (self.Player.pos["x"] < 0 or self.Player.pos["x"] > Window.width) or (self.Player.pos["y"] < 0 or self.Player.pos["y"] > Window.height):
+            self.Player.Death = True
+    
+    def Death(self):
+        if self.Player.Death:
             self.Player.pos["x"] = self.Map.Spawnpoint[0]
             self.Player.pos["y"] = self.Map.Spawnpoint[1]
             self.Redraw_Player()
+            self.Player.Death = False
 
     def Redraw_Player(self):
         self.Map.canvas.after.children.remove(self.Player.DrawnRect)
@@ -97,6 +106,7 @@ class MainGameWidgets(RelativeLayout):
             self.Player.update()
             self.Window_Change()
             self.Redraw_Player()
+            self.Borders()
             self.Death()
 
 class RRRApp(App):
