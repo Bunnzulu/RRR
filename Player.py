@@ -13,7 +13,6 @@ class Player():
         self.player_bjump = "Graphics\\Sprites\\BJump.png"
         self.FCooldown = "Graphics\\Sprites\\Cooldown.png"
         self.BCooldown = "Graphics\\Sprites\\BCooldown.png"
-        self.TCooldown = "Graphics\\Sprites\\TCooldown.png"
         self.FWalking = ["FRun1","FRun3"]
         self.FRunning = ["FRun1","FRun2","FRun3","FRun4"]
         self.BWalking = ["BRun1","BRun3"]
@@ -21,6 +20,11 @@ class Player():
         self.FShooting = ["FShoot1","FShoot2","FShoot3"]
         self.BShooting = ["BShoot1","BShoot2","BShoot3"]
         self.TShooting = ["TShoot1","TShoot2","TShoot3"]
+        self.DShooting = ["DShoot1","DShoot2","DShoot3"]
+        self.FDShooting = ["FDShoot1","FDShoot2","FDShoot3"]
+        self.FTShooting = ["FTShoot1","FTShoot2","FTShoot3"]
+        self.BDShooting = ["BDShoot1","BDShoot2","BDShoot3"]
+        self.BTShooting = ["BTShoot1","BTShoot2","BTShoot3"]
         self.Direction_x = 0
         self.Direction_y = 0
         self.FWalkIndex = 0
@@ -30,6 +34,11 @@ class Player():
         self.FShootingIndex = 0
         self.BShootingIndex = 0
         self.TShootingIndex = 0
+        self.DShootingIndex = 0
+        self.FDShootingIndex = 0
+        self.FTShootingIndex = 0
+        self.BDShootingIndex = 0
+        self.BTShootingIndex = 0
         self.Walkspeed = 1
         self.SprintSpeed = self.Walkspeed * 2
         self.Forward = True
@@ -47,7 +56,8 @@ class Player():
         self.mousepos = ()
         self.Recoil = [0,0]
         self.Death = False
-        self.Cooldown = self.GunCooldown[self.Gun]
+        self.Cooldown = 0
+
     
     def Input(self,keycode):
         if keycode[1] == "left":
@@ -68,6 +78,7 @@ class Player():
             if self.Ammo: 
                 self.Shoot()
                 self.Ammo -= 1
+                self.Cooldown = self.GunCooldown[self.Gun]
     
     def Movement_Reset(self):
         self.Direction_x = 0
@@ -106,9 +117,9 @@ class Player():
     def Shoot(self):
         if self.mousepos[0] < Window.width/2:
             self.Recoil[0] = (self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[0] == Window.width/2:
+        if self.mousepos[0] > Window.width/2:
             self.Recoil[0] = -(self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[1] == Window.height/2:
+        if self.mousepos[1] > Window.height/2:
             self.Recoil[1] = -(self.BaseFactor * self.GunFacter[self.Gun])
         if self.mousepos[1] < Window.height/2:
             self.Recoil[1] = (self.BaseFactor * self.GunFacter[self.Gun])
@@ -185,9 +196,67 @@ class Player():
                 self.TShootingIndex += 0.4
                 if self.TShootingIndex >= len(self.TShooting): 
                     self.Recoil = [0,0]
-                    self.image = self.TCooldown
                     self.TShootingIndex = 0
                 else:self.image = f"Graphics\\Sprites\\{self.TShooting[int(self.TShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[1] > 0 and self.Recoil[0] == 0:
+                self.DShootingIndex += 0.4
+                if self.DShootingIndex >= len(self.DShooting): 
+                    self.Recoil = [0,0]
+                    self.DShootingIndex = 0
+                else:self.image = f"Graphics\\Sprites\\{self.DShooting[int(self.DShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[0] < 0 and self.Recoil[1] > 0:
+                self.FDShootingIndex += 0.4
+                if self.FDShootingIndex >= len(self.FDShooting): 
+                    self.Recoil = [0,0]
+                    self.image = self.FCooldown
+                    self.FDShootingIndex = 0
+                    self.Forward = True
+                else:self.image = f"Graphics\\Sprites\\{self.FDShooting[int(self.FDShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[0] < 0 and self.Recoil[1] < 0:
+                self.FTShootingIndex += 0.4
+                if self.FTShootingIndex >= len(self.FTShooting): 
+                    self.Recoil = [0,0]
+                    self.image = self.FCooldown
+                    self.FTShootingIndex = 0
+                    self.Forward = True
+                else:self.image = f"Graphics\\Sprites\\{self.FTShooting[int(self.FTShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[0] > 0 and self.Recoil[1] > 0:
+                self.BDShootingIndex += 0.4
+                if self.BDShootingIndex >= len(self.BDShooting): 
+                    self.Recoil = [0,0]
+                    self.image = self.BCooldown
+                    self.BDShootingIndex = 0
+                    self.Forward = False
+                else:self.image = f"Graphics\\Sprites\\{self.BShooting[int(self.BDShootingIndex)]}.png"
+                self.BWalkIndex = 0
+                self.FRunningIndex = 0
+                self.BRunningIndex = 0
+                self.FWalkIndex = 0
+            elif self.Recoil[0] > 0 and self.Recoil[1] < 0:
+                self.BTShootingIndex += 0.4
+                if self.BTShootingIndex >= len(self.BTShooting): 
+                    self.Recoil = [0,0]
+                    self.image = self.BCooldown
+                    self.Cooldown = self.GunCooldown[self.Gun]
+                    self.BTShootingIndex = 0
+                    self.Forward = False
+                else:self.image = f"Graphics\\Sprites\\{self.BTShooting[int(self.BTShootingIndex)]}.png"
                 self.BWalkIndex = 0
                 self.FRunningIndex = 0
                 self.BRunningIndex = 0
@@ -203,3 +272,5 @@ class Player():
         self.Display_image = CoreImage(self.image).texture
         self.pos["x"] += self.Direction_x
         self.pos["y"] += self.Direction_y
+        if self.Cooldown > 0:
+            self.Cooldown -= 1
