@@ -19,6 +19,7 @@
     "openFiles": [
     ],
     "project": "RRR.tiled-project",
+    "property.type": "int",
     "recentFiles": [
     ],
     "tileset.lastUsedFormat": "tsx",

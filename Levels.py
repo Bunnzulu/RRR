@@ -5,6 +5,8 @@ from kivy.core.window import Window
 from kivy.graphics.vertex_instructions import Rectangle
 from kivy.graphics.context_instructions import Color
 from kivy.core.image import Image as CoreImage
+from kivy.uix.label import Label
+from kivy.graphics import Rotate,PushMatrix,PopMatrix,Translate
 from StartSceen import BrightnessLevel
 
 class MapWidget(Widget):
@@ -41,10 +43,30 @@ class MapWidget(Widget):
                             self.Add_Block(x,y,self.Tile_size)
                             # self.Blocks_coords.append((x,y,size))
         for obj in self.Map.objects:
+            y_ratio = obj.y/(self.Map.layers[0].height *32)
+            x_ratio = obj.x/(self.Map.layers[0].width *32)
+            pos=(int(x_ratio*Window.width),int((self.Map.layers[0].height *32)-(Window.height*y_ratio)))
             if obj.name == "Spawn":
-                y_ratio = obj.y/(self.Map.layers[0].height *32)
-                x_ratio = obj.x/(self.Map.layers[0].width *32)
-                self.Spawnpoint = (int(x_ratio*Window.width),int(Window.height*y_ratio))
+                self.Spawnpoint = pos
+            elif obj.name == "Rule":
+                color = obj.properties.get('Color', '#FFFFFF')
+                color = color.lstrip('#')  
+                a = int(color[0:2], 16) / 255.0
+                g = int(color[2:4], 16) / 255.0
+                b = int(color[4:6], 16) / 255.0
+                r = int(color[6:], 16) / 255.0
+                font_size = obj.properties.get('font_size')
+                text = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Black.ttf")
+                with text.canvas.before:
+                    PushMatrix()
+                    Translate(text.center_x, text.center_y)
+                    Rotate(angle=int(-obj.rotation))
+                    Translate(-text.center_x, -text.center_y)
+                with text.canvas.after:
+                    PopMatrix()
+                self.add_widget(text)
+            
+        
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
     def Get_brightness(self,Brightness):
