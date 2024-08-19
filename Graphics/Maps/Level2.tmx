@@ -50,8 +50,8 @@
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3">
-  <object id="1" name="Spawn" x="49.4035" y="145.965">
+ <objectgroup id="3" name="Objects">
+  <object id="1" name="Spawn" x="62.1287" y="59.883">
    <point/>
   </object>
   <object id="2" name="Rule" x="239.817" y="207.225" width="252.164" height="37.2105" rotation="348.809">
