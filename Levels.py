@@ -17,6 +17,8 @@ class MapWidget(Widget):
         self.Blocks = [] 
         self.MovingBlocks = []
         self.Blocks_coords = []
+        self.HBorders = []
+        self.VBorders = []
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
@@ -47,16 +49,16 @@ class MapWidget(Widget):
                             self.Add_Block(x,y,self.Tile_size)
                     elif layer.name == "HMoving":
                         image = CoreImage(image[0]).texture
-                        with self.canvas:
-                            x,y = self.Tile_Transformation(x,y,layer)
-                            block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
-                            self.MovingBlocks.append([block,"H"])
+                        x,y = self.Tile_Transformation(x,y,layer)
+                        block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
+                        self.canvas.add(block)
+                        self.MovingBlocks.append([block,"H",1])
                     elif layer.name == "VMoving":
                         image = CoreImage(image[0]).texture
-                        with self.canvas:
-                            x,y = self.Tile_Transformation(x,y,layer)
-                            block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
-                            self.MovingBlocks.append([block,"V"])
+                        x,y = self.Tile_Transformation(x,y,layer)
+                        block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
+                        self.canvas.add(block)
+                        self.MovingBlocks.append([block,"V",1])
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)
@@ -136,6 +138,12 @@ class MapWidget(Widget):
                 font_size = obj.properties.get('font_size')
                 self.Sprint_label = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Black.ttf")
                 self.add_widget(self.Sprint_label)
+            elif obj.name == "H":
+                self.HBorders.append(round(pos[0]))
+            elif obj.name == "V":
+                self.VBorders.append(round(pos[1]))
+                # with self.canvas:
+                #     Rectangle(pos=pos,size=(10,10))
             
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
@@ -155,6 +163,25 @@ class MapWidget(Widget):
     #         if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
     #             print(block[0:2])
     #             print(block[0] + block[2],block[1] + block[2])
+
+    def Move_Blocks(self):
+        for index,block in enumerate(self.MovingBlocks):
+            if block[1] == "H":
+                x,y = block[0].pos
+                x += block[2]
+                self.MovingBlocks[index][0].pos = (x,y)
+                width = block[0].size[0]
+                if round(self.MovingBlocks[index][0].pos[0]) in self.HBorders or round(self.MovingBlocks[index][0].pos[0] + width) in self.HBorders:
+                    self.MovingBlocks[index][2] *= -1
+            else:
+                x,y = block[0].pos
+                y += block[2]
+                self.MovingBlocks[index][0].pos = (x,y)
+                height = block[0].size[1]
+                if round(self.MovingBlocks[index][0].pos[1]) in self.VBorders or round(self.MovingBlocks[index][0].pos[1] + height) in self.VBorders:
+                    self.MovingBlocks[index][2] *= -1
+            with self.canvas:
+                Rectangle(pos=block[0].pos,size=block[0].size,texture=block[0].texture)
     
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)
@@ -165,7 +192,7 @@ class MapWidget(Widget):
         self.Tile_size = self.Tile_size * scale
         return int(tr_x),int(tr_y)
     
-    def Add_Block(self,x,y,size): # This needs to get a blocks top,left,right,bottom
+    def Add_Block(self,x,y,size):
         Rect = Widget(pos=(x, y), size=(size, size))
         self.Blocks.append(Rect)
 
@@ -183,3 +210,4 @@ if __name__ == "__main__":
             return MapWidget()
 
     MapApp().run()
+

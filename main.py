@@ -155,7 +155,7 @@ class MainGameWidgets(RelativeLayout):
             self.Redraw_Player()
             self.Borders()
             self.Death()
-            # if self.Map.Level > 1:Clock.schedule_once(self.Sprint_Counter, 1)
+            if self.Map.Level > 2:self.Map.Move_Blocks()
             self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
             self.Next_Level()
 
