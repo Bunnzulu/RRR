@@ -112,8 +112,8 @@ class MapWidget(Widget):
                 self.add_widget(text)
             elif obj.name == "Next":
                 self.NextDoor = Widget(pos=pos,size=(obj.width,obj.height))
-                # with self.canvas:
-                #     Rectangle(pos=pos,size=(obj.width,obj.height))
+                with self.canvas:
+                    Rectangle(pos=pos,size=(obj.width,obj.height))
 
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
