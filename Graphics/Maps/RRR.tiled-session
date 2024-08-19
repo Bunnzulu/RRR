@@ -24,10 +24,21 @@
                 3
             ],
             "scale": 1.3359375,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 319.2514619883041,
+                "y": 317.7543859649123
+            }
+        },
+        "Level3.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 1.3359375,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 320,
-                "y": 355.9298245614035
+                "y": 329.7309941520468
             }
         },
         "Main tiles.tsx": {

@@ -14,12 +14,13 @@ class MapWidget(Widget):
     Brightness_Manager = BrightnessLevel()
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
-        self.Blocks = [] # Use for Collsions
+        self.Blocks = [] 
+        self.MovingBlocks = []
         self.Blocks_coords = []
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 1
+        self.Level = 3
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
@@ -38,14 +39,24 @@ class MapWidget(Widget):
                         with self.canvas:
                             x,y = self.Tile_Transformation(x,y,layer)
                             Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
-                            # self.Blocks_coords.append((x,y,size))
                     elif layer.name == "Main":
                         image = CoreImage(image[0]).texture
                         with self.canvas:
                             x,y = self.Tile_Transformation(x,y,layer)
                             Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                             self.Add_Block(x,y,self.Tile_size)
-                            # self.Blocks_coords.append((x,y,size))
+                    elif layer.name == "HMoving":
+                        image = CoreImage(image[0]).texture
+                        with self.canvas:
+                            x,y = self.Tile_Transformation(x,y,layer)
+                            block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
+                            self.MovingBlocks.append([block,"H"])
+                    elif layer.name == "VMoving":
+                        image = CoreImage(image[0]).texture
+                        with self.canvas:
+                            x,y = self.Tile_Transformation(x,y,layer)
+                            block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
+                            self.MovingBlocks.append([block,"V"])
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)
