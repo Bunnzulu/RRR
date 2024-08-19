@@ -43,6 +43,7 @@ class Player():
         self.SprintSpeed = self.Walkspeed * 2
         self.Forward = True
         self.inair = False
+        self.Sprint = True
         self.image = self.player_idle_Forward
         self.Display_image = CoreImage(self.image).texture
         self.DrawnRect = ''
@@ -70,10 +71,10 @@ class Player():
         elif keycode[1] == "spacebar":
             self.Death = True
         elif keycode[1] == 'shift':
-            self.Direction_x = -self.SprintSpeed
+            if self.Sprint:self.Direction_x = -self.SprintSpeed
             self.Forward = False
         elif keycode[1] == 'rshift':
-            self.Direction_x = self.SprintSpeed
+            if self.Sprint:self.Direction_x = self.SprintSpeed
             self.Forward = True
         elif keycode[1] == "enter":
             if self.Ammo and self.Cooldown == 0 : 

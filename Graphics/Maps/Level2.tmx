@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="7">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="8">
  <tileset firstgid="1" source="Main tiles.tsx"/>
  <tileset firstgid="105" source="Guns.tsx"/>
  <layer id="1" name="Background" width="20" height="20">
@@ -16,9 +16,9 @@
 74,74,74,74,74,74,74,73,74,74,75,74,74,74,74,74,74,74,74,74,
 74,74,74,74,74,74,74,83,84,84,85,74,74,74,74,74,74,74,74,74,
 74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,
-74,74,74,74,74,74,74,74,74,74,74,74,63,64,64,65,74,74,74,74,
-74,74,74,74,74,74,74,74,74,74,74,74,73,74,74,75,74,74,74,74,
-74,74,74,74,74,74,74,74,74,74,74,74,83,84,84,85,74,74,74,74,
+74,74,74,74,74,74,74,74,74,74,63,64,64,65,45,45,74,74,74,74,
+74,74,74,74,74,74,74,74,74,74,73,74,74,75,74,45,74,74,74,74,
+74,74,74,74,74,74,74,74,74,74,83,84,84,85,45,45,74,74,74,74,
 74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,63,64,
 74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,73,74,
 74,74,74,74,74,74,74,74,74,74,74,74,74,74,63,64,64,64,85,74,
@@ -41,7 +41,7 @@
 17,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-27,18,18,20,0,0,0,0,0,0,0,0,0,12,14,0,0,0,0,0,
+27,18,18,20,0,0,0,0,0,0,0,12,14,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,
@@ -54,7 +54,7 @@
   <object id="1" name="Spawn" x="62.1287" y="59.883">
    <point/>
   </object>
-  <object id="2" name="Rule" x="239.817" y="207.225" width="252.164" height="37.2105" rotation="348.809">
+  <object id="2" name="Rule" x="317.665" y="193.751" width="252.164" height="37.2105" rotation="348.809">
    <properties>
     <property name="Color" type="color" value="#64121212"/>
     <property name="Text" value="Rule 2: Player can't sprint form more than 3 sec"/>
@@ -69,6 +69,14 @@
     <property name="font_size" type="int" value="18"/>
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Next Level -&gt;</text>
+  </object>
+  <object id="7" name="SC" x="153.123" y="508.74" width="145.871" height="22.9883">
+   <properties>
+    <property name="Color" type="color" value="#ff121212"/>
+    <property name="Text" value="Sprint Timer:0"/>
+    <property name="font_size" type="int" value="18"/>
+   </properties>
+   <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Sprint Timer:0</text>
   </object>
   <object id="4" name="Next" x="612.678" y="445.38" width="26.1988" height="131.743"/>
   <object id="5" name="Anmo" gid="105" x="480.281" y="123.708" width="32" height="52"/>

@@ -24,6 +24,8 @@ class MainGameWidgets(RelativeLayout):
         self.Old_Window_Size = [Window.width,Window.height]
         self.Player = Player()
         self.Pause = False
+        self.Sprint_Cooldown = 10
+        self.Sprint_Timer = 3
         self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
         self._keyboard.bind(on_key_down=self.on_keyboard_down)
         self._keyboard.bind(on_key_up=self.on_keyboard_up)
@@ -81,7 +83,9 @@ class MainGameWidgets(RelativeLayout):
     
     def Sprint_Counter(self,dt):
         if abs(self.Player.Direction_x) == self.Player.SprintSpeed:
-            self.Player.Direction_x = 0
+            self.Sprint_Timer -= 1
+            if self.Sprint_Timer == 0:
+                self.Player.Sprint = False
 
     def Death(self):
         if self.Player.Death:
@@ -133,7 +137,7 @@ class MainGameWidgets(RelativeLayout):
             self.Redraw_Player()
             self.Borders()
             self.Death()
-            if abs(self.Player.Direction_x) == self.Player.SprintSpeed:Clock.schedule_once(self.Sprint_Counter, 3)
+            if abs(self.Player.Direction_x) == self.Player.SprintSpeed and self.Map.Level > 1:Clock.schedule_once(self.Sprint_Counter, 1)
             self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
             self.Next_Level()
 
