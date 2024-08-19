@@ -21,9 +21,9 @@
 74,74,74,74,74,74,74,74,74,74,83,84,84,85,45,45,74,74,74,74,
 74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,63,64,
 74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,74,73,74,
-74,74,74,74,74,74,74,74,74,74,74,74,74,74,63,64,64,64,85,74,
-74,74,74,74,74,74,74,74,74,74,74,74,74,74,73,74,74,75,74,74,
-74,74,74,74,74,74,74,74,74,74,74,74,74,74,83,84,84,64,64,64
+74,74,74,74,74,74,74,74,74,74,74,74,74,63,64,64,64,64,85,74,
+74,74,74,74,74,74,74,74,74,74,74,74,74,73,73,74,74,75,74,74,
+74,74,74,74,74,74,74,74,74,74,74,74,74,83,84,84,84,64,64,64
 </data>
  </layer>
  <layer id="2" name="Main" width="20" height="20">
@@ -44,9 +44,9 @@
 27,18,18,20,0,0,0,0,0,0,0,12,14,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,
-27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,
-27,33,18,20,0,0,0,0,0,0,0,0,0,0,0,12,13,13,13,14,
+27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+27,33,18,20,0,0,0,0,0,0,0,0,0,0,12,13,13,13,13,14,
 27,18,18,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -54,15 +54,15 @@
   <object id="1" name="Spawn" x="62.1287" y="59.883">
    <point/>
   </object>
-  <object id="2" name="Rule" x="317.665" y="193.751" width="252.164" height="37.2105" rotation="348.809">
+  <object id="2" name="Rule" x="247.647" y="348.652" width="252.164" height="37.2105" rotation="348.809">
    <properties>
-    <property name="Color" type="color" value="#64121212"/>
+    <property name="Color" type="color" value="#96121212"/>
     <property name="Text" value="Rule 2: Player can't sprint form more than 3 sec"/>
     <property name="font_size" type="int" value="18"/>
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" color="#64121212" bold="1">Rule 2: Player can't sprint form more than 3 sec</text>
   </object>
-  <object id="3" name="NextSign" x="442.059" y="279.687" width="145.871" height="22.9883">
+  <object id="3" name="NextSign" x="468.059" y="279.687" width="145.871" height="22.9883">
    <properties>
     <property name="Color" type="color" value="#ff121212"/>
     <property name="Text" value="Next Level -&gt;"/>
@@ -78,7 +78,7 @@
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Sprint Timer:0</text>
   </object>
-  <object id="4" name="Next" x="612.678" y="445.38" width="26.1988" height="131.743"/>
+  <object id="4" name="Next" x="605.193" y="473.824" width="33.6842" height="103.299"/>
   <object id="5" name="Anmo" gid="105" x="480.281" y="123.708" width="32" height="52"/>
   <object id="6" name="AInfo" x="513.544" y="72.7164" width="74.7602" height="20.7427">
    <text wrap="1">P/Capcity</text>

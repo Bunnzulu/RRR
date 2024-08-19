@@ -82,10 +82,24 @@ class MainGameWidgets(RelativeLayout):
             self.Player.Death = True
     
     def Sprint_Counter(self,dt):
-        if abs(self.Player.Direction_x) == self.Player.SprintSpeed:
-            self.Sprint_Timer -= 1
-            if self.Sprint_Timer == 0:
-                self.Player.Sprint = False
+        if self.Sprint_Timer > 0:
+            if abs(self.Player.Direction_x) == self.Player.SprintSpeed:
+                self.Sprint_Timer -= 1
+                self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
+                if self.Sprint_Timer == 0:
+                    self.Map.Sprint_label.text = f"Sprint Cooldown: {self.Sprint_Cooldown}"
+                    self.Player.Sprint = False
+                    self.Player.Direction_x = 0
+            else:
+                self.Sprint_Timer = 3
+                self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
+        else:
+            self.Sprint_Cooldown -= 1
+            self.Map.Sprint_label.text = f"Sprint Cooldown: {self.Sprint_Cooldown}"
+            if self.Sprint_Cooldown == 0:
+                self.Sprint_Cooldown = 10
+                self.Player.Sprint = True
+                self.Sprint_Timer = 3
 
     def Death(self):
         if self.Player.Death:
@@ -111,7 +125,7 @@ class MainGameWidgets(RelativeLayout):
             self.Map.Window_change = False
             self.Old_Window_Size = [Window.width,Window.height]
 
-    def Next_Level(self):
+    def Next_Level(self): 
         if self.Player.CollideWiget.collide_widget(self.Map.NextDoor):
             if self.Map.Level < 7:
                 self.Map.Level += 1
@@ -119,10 +133,14 @@ class MainGameWidgets(RelativeLayout):
                 self.Map.Current_Level = f"Graphics\\Maps\\Level{self.Map.Level}.tmx"
                 self.Map.Blocks = []
                 self.Map.Load_Level()
+                self.Sprint_Cooldown = 10
+                self.Sprint_Timer = 3
+                self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
                 self.Player.Borders = self.Map.Blocks
                 self.Player.pos["x"] = self.Map.Spawnpoint[0]
                 self.Player.pos["y"] = self.Map.Spawnpoint[1]
                 self.Redraw_Player()
+                if self.Map.Level == 2:Clock.schedule_interval(self.Sprint_Counter,1)
                 self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
     
     def Gun_update(self):
@@ -137,7 +155,7 @@ class MainGameWidgets(RelativeLayout):
             self.Redraw_Player()
             self.Borders()
             self.Death()
-            if abs(self.Player.Direction_x) == self.Player.SprintSpeed and self.Map.Level > 1:Clock.schedule_once(self.Sprint_Counter, 1)
+            # if self.Map.Level > 1:Clock.schedule_once(self.Sprint_Counter, 1)
             self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
             self.Next_Level()
 

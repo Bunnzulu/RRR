@@ -23,6 +23,7 @@ class MapWidget(Widget):
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
+        self.Sprint_label = Label
         self.Player_Amno = Label
         self.NextDoor = Widget
         # Window.bind(mouse_pos=self.on_hover)
@@ -114,7 +115,17 @@ class MapWidget(Widget):
                 self.NextDoor = Widget(pos=pos,size=(obj.width,obj.height))
                 with self.canvas:
                     Rectangle(pos=pos,size=(obj.width,obj.height))
-
+            elif obj.name == "SC":
+                color = obj.properties.get('Color', '#FFFFFF')
+                color = color.lstrip('#')  
+                a = int(color[0:2], 16) / 255.0
+                g = int(color[2:4], 16) / 255.0
+                b = int(color[4:6], 16) / 255.0
+                r = int(color[6:], 16) / 255.0
+                font_size = obj.properties.get('font_size')
+                self.Sprint_label = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Black.ttf")
+                self.add_widget(self.Sprint_label)
+            
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
     def Get_brightness(self,Brightness):
