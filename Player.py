@@ -48,10 +48,11 @@ class Player():
         self.DrawnRect = ''
         self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
         self.Borders = []
-        self.Ammo = 500
+        self.Ammo = 20
+        self.FullAmmo = self.Ammo
         self.Gun = "SMG"
-        self.GunFacter = {"SMG":3}
-        self.GunCooldown = {"SMG":60}
+        self.GunFacter = {"SMG":4}
+        self.GunCooldown = {"SMG":10}
         self.BaseFactor = 10
         self.mousepos = ()
         self.Recoil = [0,0]
@@ -75,7 +76,7 @@ class Player():
             self.Direction_x = self.SprintSpeed
             self.Forward = True
         elif keycode[1] == "enter":
-            if self.Ammo: 
+            if self.Ammo and self.Cooldown == 0 : 
                 self.Shoot()
                 self.Ammo -= 1
                 self.Cooldown = self.GunCooldown[self.Gun]
@@ -90,7 +91,6 @@ class Player():
         else:self.image = self.player_idle_Backward
 
     def Collision(self):
-        self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
         #Vertical
         for border in self.Borders:
             if self.CollideWiget.collide_widget(border):
@@ -115,16 +115,34 @@ class Player():
                         self.Direction_x = 0
 
     def Shoot(self):
-        if self.mousepos[0] < Window.width/2:
+        if self.mousepos[0] < self.pos["x"]:
             self.Recoil[0] = (self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[0] > Window.width/2:
+        if self.mousepos[0] > self.pos["x"]:
             self.Recoil[0] = -(self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[1] > Window.height/2:
+        if self.mousepos[1] > self.pos["y"]:
             self.Recoil[1] = -(self.BaseFactor * self.GunFacter[self.Gun])
-        if self.mousepos[1] < Window.height/2:
+        if self.mousepos[1] < self.pos["y"]:
             self.Recoil[1] = (self.BaseFactor * self.GunFacter[self.Gun])
         self.pos["x"] += self.Recoil[0]
         self.pos["y"] += self.Recoil[1]
+        self.Direction_y = 0
+        self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
+        for border in self.Borders:
+            if self.CollideWiget.collide_widget(border):
+                if self.Recoil[1] < 0: #Falling
+                    if self.pos["y"] < border.top <= self.CollideWiget.top:
+                        self.pos["y"] = border.top +1
+                elif self.Recoil[1] > 0:
+                    if self.CollideWiget.top > border.y > self.pos["y"] and border.x < self.CollideWiget.center_x < border.right:
+                        self.pos["y"] = border.y - self.Height -1
+        for border in self.Borders:
+            if self.CollideWiget.collide_widget(border):
+                if self.Recoil[0] < 0:
+                    if self.CollideWiget.x < border.right <= self.CollideWiget.right and border.y < self.CollideWiget.center_y < border.top:
+                        self.pos["x"] = border.right + 1
+                elif self.Recoil[0] > 0:
+                    if border.y < self.CollideWiget.center_y < border.top and self.CollideWiget.right > border.x >= self.CollideWiget.x:
+                        self.pos["x"] = border.x - self.Width - 1
 
     def Animations(self):
         if not self.inair and self.Recoil.count(0) == 2:
@@ -266,6 +284,7 @@ class Player():
         self.Direction_y -= 1
     
     def update(self):
+        self.CollideWiget = Widget(pos=(self.pos["x"],self.pos["y"]),size=(self.Width,self.Height))
         self.Animations()
         self.Collision()
         self.gravity()

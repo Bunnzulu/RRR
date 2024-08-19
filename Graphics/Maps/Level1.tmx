@@ -57,7 +57,7 @@
   <object id="2" name="Rule" x="181.987" y="188.715" width="252.164" height="37.2105" rotation="21.3178">
    <properties>
     <property name="Color" type="color" value="#64121212"/>
-    <property name="Text" value="Rule 1: Player can't Jump"/>
+    <property name="Text" value="Rule 1: Player can't press space"/>
     <property name="font_size" type="int" value="18"/>
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" color="#64121212" bold="1">Rule 1: Player can't Jump</text>
@@ -93,6 +93,6 @@ Fast cooldown</text>
   <object id="7" name="AInfo" x="51.3216" y="15.4532" width="74.7602" height="20.7427">
    <text wrap="1">P/Capcity</text>
   </object>
-  <object id="8" name="Next" x="611.556" y="192.374" width="26.1988" height="62.1287"/>
+  <object id="8" name="Next" x="610.807" y="128" width="26.1988" height="131.743"/>
  </objectgroup>
 </map>

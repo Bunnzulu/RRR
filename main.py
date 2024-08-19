@@ -39,6 +39,7 @@ class MainGameWidgets(RelativeLayout):
         self.Game_start = True
         self.Player.Borders = self.Map.Blocks
         self.Player_Spawn()
+        self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
     
     def on_pause_back_click(self):
         self.Pause = False
@@ -83,6 +84,7 @@ class MainGameWidgets(RelativeLayout):
             self.Player.pos["x"] = self.Map.Spawnpoint[0]
             self.Player.pos["y"] = self.Map.Spawnpoint[1]
             self.Redraw_Player()
+            self.Player.Ammo = self.Player.FullAmmo
             self.Player.Death = False
 
     def Redraw_Player(self):
@@ -101,6 +103,21 @@ class MainGameWidgets(RelativeLayout):
             self.Map.Window_change = False
             self.Old_Window_Size = [Window.width,Window.height]
 
+    def Next_Level(self):
+        if self.Player.CollideWiget.collide_widget(self.Map.NextDoor):
+            print("Next Level")
+            if self.Map.Level < 10:
+                self.Map.Level += 1
+                self.Gun_update(self.Map.Level)
+                self.Map.Current_Level = f"Graphics\\Maps\\Level{self.Map.Level}.tmx"
+                self.Map.Load_Level()
+                self.Player.Borders = self.Map.Blocks
+                self.Player_Spawn()
+                self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
+    
+    def Gun_update(self,level):
+        pass
+
     def update(self,dt):
         if self.Game_start and not self.Pause:
             self.Player.update()
@@ -108,6 +125,8 @@ class MainGameWidgets(RelativeLayout):
             self.Redraw_Player()
             self.Borders()
             self.Death()
+            self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
+            self.Next_Level()
 
 class RRRApp(App):
     def build(self):

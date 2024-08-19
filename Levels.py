@@ -19,10 +19,12 @@ class MapWidget(Widget):
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Current_Level = "Graphics\\Maps\\Level1.tmx"
+        self.Level = 1
+        self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
         self.Player_Amno = Label
+        self.NextDoor = Widget
         # Window.bind(mouse_pos=self.on_hover)
     
     def Load_Level(self):
@@ -108,7 +110,10 @@ class MapWidget(Widget):
                 font_size = obj.properties.get('font_size')
                 text = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Black.ttf")
                 self.add_widget(text)
-            
+            elif obj.name == "Next":
+                self.NextDoor = Widget(pos=pos,size=(obj.width,obj.height))
+                # with self.canvas:
+                #     Rectangle(pos=pos,size=(obj.width,obj.height))
 
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
