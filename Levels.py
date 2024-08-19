@@ -22,6 +22,7 @@ class MapWidget(Widget):
         self.Current_Level = "Graphics\\Maps\\Level1.tmx"
         self.BrightRect = None
         self.BrightColor = None
+        self.Player_Amno = Label
         # Window.bind(mouse_pos=self.on_hover)
     
     def Load_Level(self):
@@ -45,7 +46,8 @@ class MapWidget(Widget):
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)
-            pos=(int(x_ratio*Window.width),int((self.Map.layers[0].height *32)-(Window.height*y_ratio)))
+            y = int((self.Map.layers[0].height *32)-(Window.height*y_ratio))
+            pos=(int(x_ratio*Window.width),y)
             if obj.name == "Spawn":
                 self.Spawnpoint = pos
             elif obj.name == "Rule":
@@ -65,8 +67,49 @@ class MapWidget(Widget):
                 with text.canvas.after:
                     PopMatrix()
                 self.add_widget(text)
+            elif obj.name == "Anmo":
+                image = CoreImage(obj.image[0]).texture
+                with self.canvas:
+                    Rectangle(pos=pos,size=(obj.width,obj.height),texture=image)
+            elif obj.name == "AInfo":
+                self.Player_Amno = Label(text="0/10",pos=pos,color=(0,0,0,1),font_size=20,font_name="Fonts\Montserrat-Black.ttf")
+                self.add_widget(self.Player_Amno)
+            elif obj.name == "Gun":
+                image = CoreImage(obj.image[0]).texture
+                with self.canvas:
+                    Rectangle(pos=pos,size=(obj.width,obj.height),texture=image)
+            elif obj.name == "GunInfo":
+                color = obj.properties.get('Color', '#FFFFFF')
+                color = color.lstrip('#')  
+                a = int(color[0:2], 16) / 255.0
+                g = int(color[2:4], 16) / 255.0
+                b = int(color[4:6], 16) / 255.0
+                r = int(color[6:], 16) / 255.0
+                font_size = obj.properties.get('font_size')
+                text = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Regular.ttf")
+                self.add_widget(text)
+            elif obj.name == "NextSign":
+                color = obj.properties.get('Color', '#FFFFFF')
+                color = color.lstrip('#')  
+                a = int(color[0:2], 16) / 255.0
+                g = int(color[2:4], 16) / 255.0
+                b = int(color[4:6], 16) / 255.0
+                r = int(color[6:], 16) / 255.0
+                font_size = obj.properties.get('font_size')
+                text = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Black.ttf")
+                self.add_widget(text)
+            elif obj.name == "Note":
+                color = obj.properties.get('Color', '#FFFFFF')
+                color = color.lstrip('#')  
+                a = int(color[0:2], 16) / 255.0
+                g = int(color[2:4], 16) / 255.0
+                b = int(color[4:6], 16) / 255.0
+                r = int(color[6:], 16) / 255.0
+                font_size = obj.properties.get('font_size')
+                text = Label(text=obj.Text,pos=pos,color=(r,g,b,a),font_size=font_size,font_name="Fonts\Montserrat-Black.ttf")
+                self.add_widget(text)
             
-        
+
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
     def Get_brightness(self,Brightness):

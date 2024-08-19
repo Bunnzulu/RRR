@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="8">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="12">
  <tileset firstgid="1" source="Main tiles.tsx"/>
  <tileset firstgid="105" source="Guns.tsx"/>
  <layer id="1" name="Background" width="20" height="20">
@@ -34,8 +34,8 @@
 38,38,38,38,38,38,38,38,38,38,38,38,39,39,39,39,39,39,39,39,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,43,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,8,8,8,10,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27,18,34,18,30,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,27,18,18,18,30,
@@ -51,29 +51,48 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="1" name="Spawn" x="47.7193" y="347.006">
-   <properties>
-    <property name="Color" type="color" value="#64121212"/>
-   </properties>
+  <object id="1" name="Spawn" x="58.1988" y="180.83">
    <point/>
   </object>
   <object id="2" name="Rule" x="181.987" y="188.715" width="252.164" height="37.2105" rotation="21.3178">
    <properties>
     <property name="Color" type="color" value="#64121212"/>
-    <property name="Text" value="Rule 1: Don't Jump"/>
-    <property name="font" value="Montserrat"/>
+    <property name="Text" value="Rule 1: Player can't Jump"/>
     <property name="font_size" type="int" value="18"/>
    </properties>
-   <text fontfamily="Montserrat" pixelsize="20" color="#64121212" bold="1">Rule 1: Don't Jump</text>
+   <text fontfamily="Montserrat" pixelsize="20" color="#64121212" bold="1">Rule 1: Player can't Jump</text>
+  </object>
+  <object id="11" name="Note" x="236.63" y="140.06" width="252.164" height="37.2105">
+   <properties>
+    <property name="Color" type="color" value="#64121212"/>
+    <property name="Text" value="Press Enter to Shoot. You shoot where your mouse is."/>
+    <property name="font_size" type="int" value="18"/>
+   </properties>
+   <text fontfamily="Montserrat" pixelsize="20" color="#64121212" bold="1">Press Enter to Shoot. You shoot where your mouse is.</text>
+  </object>
+  <object id="9" name="NextSign" x="470.996" y="83.5699" width="145.871" height="22.9883">
+   <properties>
+    <property name="Color" type="color" value="#ff121212"/>
+    <property name="Text" value="Next Level -&gt;"/>
+    <property name="font_size" type="int" value="18"/>
+   </properties>
+   <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Next Level -&gt;</text>
   </object>
   <object id="4" name="Gun" gid="106" x="331.754" y="439.427" width="100" height="35"/>
-  <object id="5" name="Anmo" gid="105" x="10.9474" y="69.4152" width="32" height="52"/>
-  <object id="6" name="Info" x="316.304" y="445.863" width="168.327" height="76.1345">
-   <text wrap="1">Smg: Small Recoil
+  <object id="5" name="Anmo" gid="105" x="36.9474" y="69.4152" width="32" height="52"/>
+  <object id="6" name="GunInfo" x="337.082" y="502.003" width="121.918" height="45.4444">
+   <properties>
+    <property name="Color" type="color" value="#ff000000"/>
+    <property name="Text">Smg: Small Recoil
+Fast cooldown</property>
+    <property name="font_size" type="int" value="18"/>
+   </properties>
+   <text fontfamily="Montserrat" pixelsize="17" wrap="1">Smg: Small Recoil
 Fast cooldown</text>
   </object>
   <object id="7" name="AInfo" x="51.3216" y="15.4532" width="74.7602" height="20.7427">
    <text wrap="1">P/Capcity</text>
   </object>
+  <object id="8" name="Next" x="611.556" y="192.374" width="26.1988" height="62.1287"/>
  </objectgroup>
 </map>
