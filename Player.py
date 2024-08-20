@@ -43,6 +43,7 @@ class Player():
         self.SprintSpeed = self.Walkspeed * 2
         self.Forward = True
         self.inair = False
+        self.onground = True
         self.Sprint = True
         self.image = self.player_idle_Forward
         self.Display_image = CoreImage(self.image).texture
@@ -59,25 +60,34 @@ class Player():
         self.Recoil = [0,0]
         self.Death = False
         self.Cooldown = 0
-
+        self.Movement_Keys = set()
+        self.Moved = False
     
     def Input(self,keycode):
         if keycode[1] == "left":
             self.Direction_x = -self.Walkspeed
             self.Forward = False
+            self.Movement_Keys.add(keycode[1])
         elif keycode[1] == "right":
             self.Direction_x = self.Walkspeed
             self.Forward = True
+            self.Movement_Keys.add(keycode[1])
         elif keycode[1] == "spacebar":
             self.Death = True
         elif keycode[1] == 'shift':
-            if self.Sprint:self.Direction_x = -self.SprintSpeed
+            if self.Sprint:
+                self.Direction_x = -self.SprintSpeed
+                self.Movement_Keys.add(keycode[1])
             self.Forward = False
+            self.Movement_Keys.add(keycode[1])
         elif keycode[1] == 'rshift':
-            if self.Sprint:self.Direction_x = self.SprintSpeed
+            if self.Sprint:
+                self.Direction_x = self.SprintSpeed
+                self.Movement_Keys.add(keycode[1])
             self.Forward = True
         elif keycode[1] == "enter":
-            if self.Ammo and self.Cooldown == 0 : 
+            if self.Ammo and self.Cooldown == 0 :
+                self.Movement_Keys.add(keycode[1]) 
                 self.Shoot()
                 self.Ammo -= 1
                 self.Cooldown = self.GunCooldown[self.Gun]
@@ -99,6 +109,7 @@ class Player():
                     if self.pos["y"] < border.top <= self.CollideWiget.top:
                         self.pos["y"] = border.top
                         self.Direction_y = 0
+                        self.onground = True
                 elif self.Direction_y > 0:
                     if self.CollideWiget.top > border.y > self.pos["y"] and border.x < self.CollideWiget.center_x < border.right:
                         self.pos["y"] = border.y - self.Height
@@ -116,6 +127,7 @@ class Player():
                         self.Direction_x = 0
 
     def Shoot(self):
+        self.onground = False
         if self.mousepos[0] < self.pos["x"]:
             self.Recoil[0] = (self.BaseFactor * self.GunFacter[self.Gun])
         if self.mousepos[0] > self.pos["x"]:

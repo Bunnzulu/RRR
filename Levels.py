@@ -22,7 +22,7 @@ class MapWidget(Widget):
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 3
+        self.Level = 1
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
@@ -54,12 +54,14 @@ class MapWidget(Widget):
                         block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                         self.canvas.add(block)
                         platform.append(block)
+                        self.Add_Block(x,y,self.Tile_size)
                     elif layer.name == "VMoving":
                         image = CoreImage(image[0]).texture
                         x,y = self.Tile_Transformation(x,y,layer)
                         block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                         self.canvas.add(block)
                         self.MovingBlocks.append([block,"V",1])
+                        self.Add_Block(x,y,self.Tile_size)
         self.MovingBlocks.append([platform,"H",1])
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
@@ -180,9 +182,14 @@ class MapWidget(Widget):
                         Rectangle(pos=plat.pos,size=plat.size,texture=plat.texture)
             else:
                 x,y = block[0].pos
+                for wid in self.Blocks:
+                    if wid.pos == block[0].pos:
+                        self.Blocks.remove(wid)
                 y += block[2]
                 self.MovingBlocks[index][0].pos = (x,y)
                 height = block[0].size[1]
+                Rect = Widget(pos=(x, y), size=block[0].size)
+                self.Blocks.append(Rect)
                 if round(self.MovingBlocks[index][0].pos[1]) in self.VBorders or round(self.MovingBlocks[index][0].pos[1] + height) in self.VBorders:
                     self.MovingBlocks[index][2] *= -1
                 with self.canvas:

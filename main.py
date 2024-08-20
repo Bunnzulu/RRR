@@ -52,6 +52,7 @@ class MainGameWidgets(RelativeLayout):
         with self.Map.canvas.after:
             self.Player.pos["x"] = self.Map.Spawnpoint[0]
             self.Player.pos["y"] = self.Map.Spawnpoint[1]
+            self.Player.Moved = False
             self.Player.DrawnRect = Rectangle(pos=(self.Player.pos["x"],self.Player.pos["y"]),size=(self.Player.Width,self.Player.Height),texture=self.Player.Display_image)
     
     def keyboard_closed(self):
@@ -70,12 +71,19 @@ class MainGameWidgets(RelativeLayout):
                 self.PMenu = PauseWidgets()
                 self.add_widget(self.PMenu)
             if not self.Pause:
+                self.Player.Moved = True
                 self.Player.Input(keycode)
         return True
 
     def on_keyboard_up(self,keyboard,keycode):
         self.Player.Movement_Reset()
+        try:self.Player.Movement_Keys.remove(keycode[1])
+        except:pass
         return True
+    
+    def Rule3(self):
+        if not self.Player.Movement_Keys and self.Player.Recoil.count(0) == 2 and self.Player.onground and self.Player.Moved:
+            print("Death")
 
     def Borders(self):
         if (self.Player.pos["x"] < 0 or self.Player.pos["x"] > Window.width) or (self.Player.pos["y"] < 0 or self.Player.pos["y"] > Window.height):
@@ -155,7 +163,9 @@ class MainGameWidgets(RelativeLayout):
             self.Redraw_Player()
             self.Borders()
             self.Death()
-            if self.Map.Level > 2:self.Map.Move_Blocks()
+            if self.Map.Level > 2:
+                self.Map.Move_Blocks()
+                self.Rule3()
             self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
             self.Next_Level()
 
