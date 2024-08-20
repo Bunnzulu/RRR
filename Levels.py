@@ -22,7 +22,7 @@ class MapWidget(Widget):
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 1
+        self.Level = 3
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
@@ -169,32 +169,38 @@ class MapWidget(Widget):
     #             print(block[0] + block[2],block[1] + block[2])
 
     def Move_Blocks(self):
-        for index,block in enumerate(self.MovingBlocks):
+        for index, block in enumerate(self.MovingBlocks):
             if block[1] == "H":
-                for i,plat in enumerate(block[0]):
-                    x,y = plat.pos
+                for i, plat in enumerate(block[0]):
+                    x, y = plat.pos
+                    for o in range(len(self.Blocks)):
+                        if self.Blocks[o].pos == plat.pos:
+                            self.Blocks.remove(self.Blocks[o])
+
                     x += block[2]
-                    self.MovingBlocks[index][0][i].pos = (x,y)
+                    plat.pos = (x, y)
+                    
                     width = plat.size[0]
-                    if round(self.MovingBlocks[index][0][i].pos[0]) in self.HBorders or round(self.MovingBlocks[index][0][i].pos[0] + width) in self.HBorders:
-                        self.MovingBlocks[index][2] *= -1     
-                    with self.canvas:
-                        Rectangle(pos=plat.pos,size=plat.size,texture=plat.texture)
+                    if round(plat.pos[0]) in self.HBorders or round(plat.pos[0] + width) in self.HBorders:
+                        block[2] *= -1
+                    
+                    block[0][i].pos = (x, y)
+                    block[0][i].texture.bind()
+                    self.Add_Block(x,y,block[0][i].size[1])
+
             else:
-                x,y = block[0].pos
-                for wid in self.Blocks:
-                    if wid.pos == block[0].pos:
-                        self.Blocks.remove(wid)
+                x, y = block[0].pos
                 y += block[2]
-                self.MovingBlocks[index][0].pos = (x,y)
+                block[0].pos = (x, y)
+
                 height = block[0].size[1]
-                Rect = Widget(pos=(x, y), size=block[0].size)
-                self.Blocks.append(Rect)
-                if round(self.MovingBlocks[index][0].pos[1]) in self.VBorders or round(self.MovingBlocks[index][0].pos[1] + height) in self.VBorders:
-                    self.MovingBlocks[index][2] *= -1
-                with self.canvas:
-                    Rectangle(pos=block[0].pos,size=block[0].size,texture=block[0].texture)
-    
+                if round(block[0].pos[1]) in self.VBorders or round(block[0].pos[1] + height) in self.VBorders:
+                    block[2] *= -1 
+
+                block[0].pos = (x, y)
+                block[0].texture.bind()
+
+
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)
         y_scale = Window.height/(layer.height * self.Tile_size)

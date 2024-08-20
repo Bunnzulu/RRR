@@ -83,7 +83,7 @@ class MainGameWidgets(RelativeLayout):
     
     def Rule3(self):
         if not self.Player.Movement_Keys and self.Player.Recoil.count(0) == 2 and self.Player.onground and self.Player.Moved:
-            print("Death")
+            self.Player.Death = True
 
     def Borders(self):
         if (self.Player.pos["x"] < 0 or self.Player.pos["x"] > Window.width) or (self.Player.pos["y"] < 0 or self.Player.pos["y"] > Window.height):
@@ -115,6 +115,7 @@ class MainGameWidgets(RelativeLayout):
             self.Player.pos["y"] = self.Map.Spawnpoint[1]
             self.Redraw_Player()
             self.Player.Ammo = self.Player.FullAmmo
+            self.Player.Moved = False
             self.Player.Death = False
 
     def Redraw_Player(self):
@@ -147,14 +148,18 @@ class MainGameWidgets(RelativeLayout):
                 self.Player.Borders = self.Map.Blocks
                 self.Player.pos["x"] = self.Map.Spawnpoint[0]
                 self.Player.pos["y"] = self.Map.Spawnpoint[1]
+                self.Player.Moved = False
                 self.Redraw_Player()
                 if self.Map.Level == 2:Clock.schedule_interval(self.Sprint_Counter,1)
                 self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
     
     def Gun_update(self):
-        if self.Map.Level < 4:
+        if self.Map.Level < 3:
             self.Player.Ammo = 0
             self.Player.FullAmmo = 0
+        elif self.Map.Level == 3:
+            self.Player.Ammo = 10
+            self.Player.FullAmmo = 10
 
     def update(self,dt):
         if self.Game_start and not self.Pause:
