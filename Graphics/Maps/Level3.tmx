@@ -127,7 +127,7 @@
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Sprint Timer:0</text>
   </object>
-  <object id="6" name="Spawn" x="54.6433" y="198.363">
+  <object id="6" name="Spawn" x="40.4211" y="82">
    <point/>
   </object>
   <object id="7" name="Next" x="604.444" y="504.514" width="33.6842" height="103.299"/>

@@ -32,6 +32,7 @@ class MapWidget(Widget):
         # Window.bind(mouse_pos=self.on_hover)
     
     def Load_Level(self):
+        platform = []
         self.Map = pytmx.TiledMap(self.Current_Level)
         for layer in self.Map.layers:
             if layer.name != "Objects":
@@ -52,13 +53,14 @@ class MapWidget(Widget):
                         x,y = self.Tile_Transformation(x,y,layer)
                         block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                         self.canvas.add(block)
-                        self.MovingBlocks.append([block,"H",1])
+                        platform.append(block)
                     elif layer.name == "VMoving":
                         image = CoreImage(image[0]).texture
                         x,y = self.Tile_Transformation(x,y,layer)
                         block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                         self.canvas.add(block)
                         self.MovingBlocks.append([block,"V",1])
+        self.MovingBlocks.append([platform,"H",1])
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)
@@ -167,12 +169,15 @@ class MapWidget(Widget):
     def Move_Blocks(self):
         for index,block in enumerate(self.MovingBlocks):
             if block[1] == "H":
-                x,y = block[0].pos
-                x += block[2]
-                self.MovingBlocks[index][0].pos = (x,y)
-                width = block[0].size[0]
-                if round(self.MovingBlocks[index][0].pos[0]) in self.HBorders or round(self.MovingBlocks[index][0].pos[0] + width) in self.HBorders:
-                    self.MovingBlocks[index][2] *= -1
+                for i,plat in enumerate(block[0]):
+                    x,y = plat.pos
+                    x += block[2]
+                    self.MovingBlocks[index][0][i].pos = (x,y)
+                    width = plat.size[0]
+                    if round(self.MovingBlocks[index][0][i].pos[0]) in self.HBorders or round(self.MovingBlocks[index][0][i].pos[0] + width) in self.HBorders:
+                        self.MovingBlocks[index][2] *= -1     
+                    with self.canvas:
+                        Rectangle(pos=plat.pos,size=plat.size,texture=plat.texture)
             else:
                 x,y = block[0].pos
                 y += block[2]
@@ -180,8 +185,8 @@ class MapWidget(Widget):
                 height = block[0].size[1]
                 if round(self.MovingBlocks[index][0].pos[1]) in self.VBorders or round(self.MovingBlocks[index][0].pos[1] + height) in self.VBorders:
                     self.MovingBlocks[index][2] *= -1
-            with self.canvas:
-                Rectangle(pos=block[0].pos,size=block[0].size,texture=block[0].texture)
+                with self.canvas:
+                    Rectangle(pos=block[0].pos,size=block[0].size,texture=block[0].texture)
     
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)
