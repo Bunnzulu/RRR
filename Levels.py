@@ -15,14 +15,15 @@ class MapWidget(Widget):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
         self.Blocks = [] 
-        self.MovingBlocks = []
+        self.HMovingBlocks = []
+        self.VMovingBlocks = []
         self.Blocks_coords = []
         self.HBorders = []
         self.VBorders = []
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 3
+        self.Level = 1
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
@@ -60,9 +61,9 @@ class MapWidget(Widget):
                         x,y = self.Tile_Transformation(x,y,layer)
                         block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                         self.canvas.add(block)
-                        self.MovingBlocks.append([block,"V",1])
+                        self.VMovingBlocks.append([block,1])
                         self.Add_Block(x,y,self.Tile_size)
-        self.MovingBlocks.append([platform,"H",1])
+        if platform:self.HMovingBlocks.append([platform,1])
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)
@@ -169,36 +170,39 @@ class MapWidget(Widget):
     #             print(block[0] + block[2],block[1] + block[2])
 
     def Move_Blocks(self):
-        for index, block in enumerate(self.MovingBlocks):
-            if block[1] == "H":
-                for i, plat in enumerate(block[0]):
-                    x, y = plat.pos
-                    for o in range(len(self.Blocks)):
-                        if self.Blocks[o].pos == plat.pos:
-                            self.Blocks.remove(self.Blocks[o])
+        for index, block in enumerate(self.HMovingBlocks):
+            for i, plat in enumerate(block[0]):
+                x, y = plat.pos
+                for o in range(len(self.Blocks)):
+                    if self.Blocks[o].pos == plat.pos:
+                        self.Blocks.remove(self.Blocks[o])
+                        break
 
-                    x += block[2]
-                    plat.pos = (x, y)
-                    
-                    width = plat.size[0]
-                    if round(plat.pos[0]) in self.HBorders or round(plat.pos[0] + width) in self.HBorders:
-                        block[2] *= -1
-                    
-                    block[0][i].pos = (x, y)
-                    block[0][i].texture.bind()
-                    self.Add_Block(x,y,block[0][i].size[1])
+                x += block[1]
+                plat.pos = (x, y)
+                
+                width = plat.size[0]
+                if round(plat.pos[0]) in self.HBorders or round(plat.pos[0] + width) in self.HBorders:
+                    block[1] *= -1
+                
+                block[0][i].pos = (x, y)
+                block[0][i].texture.bind()
+                self.Add_Block(x,y,block[0][i].size[1])
 
-            else:
-                x, y = block[0].pos
-                y += block[2]
-                block[0].pos = (x, y)
+        for block in self.VMovingBlocks:
+            x, y = block[0].pos
+            for o in range(len(self.Blocks)):
+                if self.Blocks[o].pos[0] == block[0].pos[0] and self.Blocks[o].pos[1] == block[0].pos[1]:
+                    self.Blocks.remove(self.Blocks[o])
+                    break
+            y += block[1]
+            block[0].pos = (x, y)
+            self.Add_Block(x,y,block[0].size[1])
+            block[0].texture.bind()
 
-                height = block[0].size[1]
-                if round(block[0].pos[1]) in self.VBorders or round(block[0].pos[1] + height) in self.VBorders:
-                    block[2] *= -1 
-
-                block[0].pos = (x, y)
-                block[0].texture.bind()
+            height = block[0].size[1]
+            if round(block[0].pos[1]) in self.VBorders or round(block[0].pos[1] + height) in self.VBorders:
+                block[1] *= -1 
 
 
     def Tile_Transformation(self,x,y,layer):

@@ -154,10 +154,10 @@ class MainGameWidgets(RelativeLayout):
                 self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
     
     def Gun_update(self):
-        if self.Map.Level < 3:
+        if self.Map.Level < 4:
             self.Player.Ammo = 0
             self.Player.FullAmmo = 0
-        elif self.Map.Level == 3:
+        elif self.Map.Level == 4:
             self.Player.Ammo = 10
             self.Player.FullAmmo = 10
 
