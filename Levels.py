@@ -23,7 +23,7 @@ class MapWidget(Widget):
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 5
+        self.Level = 6
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
@@ -55,8 +55,11 @@ class MapWidget(Widget):
                         x,y = self.Tile_Transformation(x,y,layer)
                         block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
                         self.canvas.add(block)
-                        platform.append(block)
-                        self.Add_Block(x,y,self.Tile_size)
+                        if len(platform) < 3:platform.append(block)
+                        if len(platform) == 3:
+                            self.HMovingBlocks.append([platform,1])
+                            platform = []                      
+                        self.Add_Block(x,y,self.Tile_size)                 
                     elif layer.name == "VMoving":
                         image = CoreImage(image[0]).texture
                         x,y = self.Tile_Transformation(x,y,layer)
@@ -64,7 +67,7 @@ class MapWidget(Widget):
                         self.canvas.add(block)
                         self.VMovingBlocks.append([block,1])
                         self.Add_Block(x,y,self.Tile_size)
-        if platform:self.HMovingBlocks.append([platform,1])
+        
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)

@@ -162,6 +162,10 @@ class MainGameWidgets(RelativeLayout):
             self.Player.Gun = "Shotgun"
             self.Player.Ammo = 10
             self.Player.FullAmmo = 10
+        elif self.Map.Level == 5:
+            self.Player.Gun = "Shotgun"
+            self.Player.Ammo = 2
+            self.Player.FullAmmo = 2
 
     def Change_Labels(self):
         self.Map.Cooldown_label.text = f"Cooldown: {self.Player.Cooldown}s"

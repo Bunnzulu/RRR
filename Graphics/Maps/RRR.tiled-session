@@ -63,7 +63,18 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 360.66666666666663,
-                "y": 461.99999999999994
+                "y": 827.3333333333333
+            }
+        },
+        "Level6.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 0.75,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 387.33333333333326,
+                "y": 317.99999999999994
             }
         },
         "Main tiles.tsx": {
@@ -71,9 +82,9 @@
         }
     },
     "last.imagePath": "C:/Users/bunnz/OneDrive/Documents/Github Projects/RRR/Graphics/Tiles/Tileset/Individual_PNGs/Level_Tileset",
-    "map.height": 20,
+    "map.height": 40,
     "map.lastUsedFormat": "tmx",
-    "map.width": 20,
+    "map.width": 10,
     "openFiles": [
     ],
     "project": "RRR.tiled-project",
