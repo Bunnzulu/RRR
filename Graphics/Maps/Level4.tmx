@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="9">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="25" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="11">
  <tileset firstgid="1" source="Main tiles.tsx"/>
- <tileset firstgid="105" source="Guns.tsx"/>
+ <tileset firstgid="101" source="Guns.tsx"/>
  <layer id="1" name="Background" width="30" height="25">
   <data encoding="csv">
 45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,45,
@@ -93,7 +93,7 @@
   <object id="1" name="Spawn" x="46.6667" y="332">
    <point/>
   </object>
-  <object id="2" name="H" x="808" y="354.667">
+  <object id="2" name="H" x="705.333" y="357.334">
    <point/>
   </object>
   <object id="3" name="H" x="226.667" y="354.667">
@@ -107,11 +107,11 @@
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Sprint Timer:0</text>
   </object>
-  <object id="5" name="Anmo" gid="109" x="770.667" y="700" width="18.6667" height="101.333"/>
+  <object id="5" name="Anmo" gid="105" x="770.667" y="700" width="18.6667" height="101.333"/>
   <object id="6" name="AInfo" x="739.953" y="667.295" width="74.7602" height="20.7427">
    <text wrap="1">P/Capcity</text>
   </object>
-  <object id="7" name="Gun" gid="108" x="412.667" y="655.833" width="111" height="32"/>
+  <object id="7" name="Gun" gid="104" x="412.667" y="655.833" width="111" height="32"/>
   <object id="8" name="GunInfo" x="417.708" y="749.278" width="121.918" height="45.4444">
    <properties>
     <property name="Color" type="color" value="#ff000000"/>
@@ -123,5 +123,14 @@ High Cooldown</property>
    <text fontfamily="Montserrat" pixelsize="17" wrap="1">Smg: Small Recoil
 Fast cooldown</text>
   </object>
+  <object id="9" name="NextSign" x="689.731" y="104.839" width="145.871" height="22.9883">
+   <properties>
+    <property name="Color" type="color" value="#ff121212"/>
+    <property name="Text" value="Next Level -&gt;"/>
+    <property name="font_size" type="int" value="18"/>
+   </properties>
+   <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Next Level -&gt;</text>
+  </object>
+  <object id="10" name="Next" x="913.918" y="34.1285" width="44.1637" height="131.743"/>
  </objectgroup>
 </map>

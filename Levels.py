@@ -174,20 +174,18 @@ class MapWidget(Widget):
             for i, plat in enumerate(block[0]):
                 x, y = plat.pos
                 for o in range(len(self.Blocks)):
-                    if self.Blocks[o].pos == plat.pos:
+                    if self.Blocks[o].pos[0] == plat.pos[0] and self.Blocks[o].pos[1] == plat.pos[1]:
                         self.Blocks.remove(self.Blocks[o])
                         break
 
                 x += block[1]
-                plat.pos = (x, y)
+                block[0][i].pos = (x, y)
+                block[0][i].texture.bind()
+                self.Add_Block(x,y,block[0][i].size[1])
                 
                 width = plat.size[0]
                 if round(plat.pos[0]) in self.HBorders or round(plat.pos[0] + width) in self.HBorders:
                     block[1] *= -1
-                
-                block[0][i].pos = (x, y)
-                block[0][i].texture.bind()
-                self.Add_Block(x,y,block[0][i].size[1])
 
         for block in self.VMovingBlocks:
             x, y = block[0].pos

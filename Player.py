@@ -52,9 +52,9 @@ class Player():
         self.Borders = []
         self.Ammo = 20
         self.FullAmmo = self.Ammo
-        self.Gun = "SMG"
-        self.GunFacter = {"SMG":4}
-        self.GunCooldown = {"SMG":10}
+        self.Gun = "Shotgun"
+        self.GunFacter = {"SMG":4,"Shotgun":10}
+        self.GunCooldown = {"SMG":10,"Shotgun":30}
         self.BaseFactor = 10
         self.mousepos = ()
         self.Recoil = [0,0]

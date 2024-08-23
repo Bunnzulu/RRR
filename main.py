@@ -31,6 +31,7 @@ class MainGameWidgets(RelativeLayout):
         self._keyboard.bind(on_key_up=self.on_keyboard_up)
         Clock.schedule_interval(self.update,1/60)
         Window.bind(mouse_pos=self.Mouse_Motion)
+
     
     def on_start_click(self):
         self.clear_widgets()
@@ -81,6 +82,8 @@ class MainGameWidgets(RelativeLayout):
         except:pass
         return True
     
+    
+
     def Rule3(self):
         if not self.Player.Movement_Keys and self.Player.Recoil.count(0) == 2 and self.Player.onground and self.Player.Moved:
             self.Player.Death = True
@@ -158,6 +161,7 @@ class MainGameWidgets(RelativeLayout):
             self.Player.Ammo = 0
             self.Player.FullAmmo = 0
         elif self.Map.Level == 4:
+            self.Player.Gun = "Shotgun"
             self.Player.Ammo = 10
             self.Player.FullAmmo = 10
 
