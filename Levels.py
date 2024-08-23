@@ -23,7 +23,7 @@ class MapWidget(Widget):
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 4
+        self.Level = 5
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None

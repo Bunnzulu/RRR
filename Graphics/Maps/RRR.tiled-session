@@ -55,6 +55,17 @@
                 "y": 401.99999999999994
             }
         },
+        "Level5.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 360.66666666666663,
+                "y": 461.99999999999994
+            }
+        },
         "Main tiles.tsx": {
             "dynamicWrapping": true
         }
