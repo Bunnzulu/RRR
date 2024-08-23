@@ -35,6 +35,13 @@ class MapWidget(Widget):
     
     def Load_Level(self):
         platform = []
+        self.HMovingBlocks = []
+        self.VMovingBlocks = []
+        self.Blocks_coords = []
+        self.HBorders = []
+        self.VBorders = []
+        self.Blocks = []
+        self.canvas.clear()
         self.Map = pytmx.TiledMap(self.Current_Level)
         for layer in self.Map.layers:
             if layer.name != "Objects":
@@ -215,7 +222,6 @@ class MapWidget(Widget):
             height = block[0].size[1]
             if round(block[0].pos[1]) in self.VBorders or round(block[0].pos[1] + height) in self.VBorders:
                 block[1] *= -1 
-
 
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)

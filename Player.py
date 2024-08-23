@@ -53,7 +53,7 @@ class Player():
         self.Ammo = 20
         self.FullAmmo = self.Ammo
         self.Gun = "Shotgun"
-        self.GunFacter = {"SMG":4,"Shotgun":10}
+        self.GunFacter = {"SMG":4,"Shotgun":12}
         self.GunCooldown = {"SMG":10,"Shotgun":30}
         self.BaseFactor = 10
         self.mousepos = ()
