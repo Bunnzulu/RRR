@@ -82,8 +82,6 @@ class MainGameWidgets(RelativeLayout):
         except:pass
         return True
     
-    
-
     def Rule3(self):
         if not self.Player.Movement_Keys and self.Player.Recoil.count(0) == 2 and self.Player.onground and self.Player.Moved:
             self.Player.Death = True
@@ -165,6 +163,14 @@ class MainGameWidgets(RelativeLayout):
             self.Player.Ammo = 10
             self.Player.FullAmmo = 10
 
+    def Change_Labels(self):
+        self.Map.Cooldown_label.text = f"Cooldown: {self.Player.Cooldown}s"
+        self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
+        if self.Player.Cooldown == 0: self.Map.Cooldown_label.color = (0,1,0,1)
+        if self.Player.Cooldown > 0: self.Map.Cooldown_label.color = (1,0,0,1)
+        if self.Player.Ammo == 0: self.Map.Player_Amno.color = (1,0,0,1)
+        if self.Player.Ammo > 0: self.Map.Player_Amno.color = (0,1,0,1)
+
     def update(self,dt):
         if self.Game_start and not self.Pause:
             self.Player.update()
@@ -175,7 +181,7 @@ class MainGameWidgets(RelativeLayout):
             if self.Map.Level > 2:
                 self.Map.Move_Blocks()
                 self.Rule3()
-            self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
+            self.Change_Labels()
             self.Next_Level()
 
 class RRRApp(App):

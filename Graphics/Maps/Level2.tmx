@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="8">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="9">
  <tileset firstgid="1" source="Main tiles.tsx"/>
- <tileset firstgid="105" source="Guns.tsx"/>
+ <tileset firstgid="101" source="Guns.tsx"/>
  <layer id="1" name="Background" width="20" height="20">
   <data encoding="csv">
 67,68,69,67,67,67,67,67,67,67,67,67,67,67,67,67,67,67,68,69,
@@ -79,7 +79,7 @@
    <text fontfamily="Montserrat" pixelsize="20" wrap="1" color="#121212" bold="1">Sprint Timer:0</text>
   </object>
   <object id="4" name="Next" x="605.193" y="473.824" width="33.6842" height="103.299"/>
-  <object id="5" name="Anmo" gid="105" x="480.281" y="123.708" width="32" height="52"/>
+  <object id="5" name="Anmo" gid="101" x="480.281" y="123.708" width="32" height="52"/>
   <object id="6" name="AInfo" x="513.544" y="72.7164" width="74.7602" height="20.7427">
    <text wrap="1">P/Capcity</text>
   </object>

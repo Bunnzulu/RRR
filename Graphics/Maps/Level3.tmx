@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="13">
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="14">
  <tileset firstgid="1" source="Main tiles.tsx"/>
- <tileset firstgid="105" source="Guns.tsx"/>
+ <tileset firstgid="101" source="Guns.tsx"/>
  <layer id="1" name="Background" width="20" height="20">
   <data encoding="csv">
 27,18,19,18,19,18,19,18,19,18,19,18,19,18,19,18,19,18,19,30,
@@ -91,7 +91,7 @@
    </properties>
    <text fontfamily="Montserrat" pixelsize="20" color="#64121212" bold="1">Rule 3: Player can't stop</text>
   </object>
-  <object id="3" name="Anmo" gid="105" x="13.193" y="391.684" width="32" height="52"/>
+  <object id="3" name="Anmo" gid="101" x="13.193" y="391.684" width="32" height="52"/>
   <object id="4" name="AInfo" x="7.53218" y="422.284" width="74.7602" height="20.7427">
    <text wrap="1">P/Capcity</text>
   </object>
