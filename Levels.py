@@ -20,10 +20,11 @@ class MapWidget(Widget):
         self.Blocks_coords = []
         self.HBorders = []
         self.VBorders = []
+        self.DeadlyBlocks = []
         self.Tile_size = 32
         self.Spawnpoint = ()
         self.Window_change = False
-        self.Level = 6
+        self.Level = 1
         self.Current_Level = f"Graphics\\Maps\\Level{self.Level}.tmx"
         self.BrightRect = None
         self.BrightColor = None
@@ -31,7 +32,6 @@ class MapWidget(Widget):
         self.Player_Amno = Label
         self.Cooldown_label = Label
         self.NextDoor = Widget
-        # Window.bind(mouse_pos=self.on_hover)
     
     def Load_Level(self):
         platform = []
@@ -41,6 +41,7 @@ class MapWidget(Widget):
         self.HBorders = []
         self.VBorders = []
         self.Blocks = []
+        self.Spawnpoint = ()
         self.canvas.clear()
         self.Map = pytmx.TiledMap(self.Current_Level)
         for layer in self.Map.layers:
@@ -74,7 +75,20 @@ class MapWidget(Widget):
                         self.canvas.add(block)
                         self.VMovingBlocks.append([block,1])
                         self.Add_Block(x,y,self.Tile_size)
-        
+                    elif layer.name == "FastH":
+                        image = CoreImage(image[0]).texture
+                        x,y = self.Tile_Transformation(x,y,layer)
+                        block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
+                        self.canvas.add(block)
+                        self.HMovingBlocks.append([block,2])                   
+                        self.Add_Block2(x,y,self.Tile_size)  
+                    elif layer.name == "Deadly":
+                        image = CoreImage(image[0]).texture
+                        x,y = self.Tile_Transformation(x,y,layer)
+                        block = Rectangle(pos=(x,y),size=(self.Tile_size,self.Tile_size),texture=image)
+                        self.canvas.add(block)                   
+                        self.Add_Block2(x,y,self.Tile_size)             
+                    
         for obj in self.Map.objects:
             y_ratio = obj.y/(self.Map.layers[0].height *32)
             x_ratio = obj.x/(self.Map.layers[0].width *32)
@@ -166,11 +180,10 @@ class MapWidget(Widget):
                 self.add_widget(self.Cooldown_label)
             elif obj.name == "H":
                 self.HBorders.append(round(pos[0]))
+                with self.canvas:
+                    Rectangle(pos=pos,size=(10,10))          
             elif obj.name == "V":
                 self.VBorders.append(round(pos[1]))
-                # with self.canvas:
-                #     Rectangle(pos=pos,size=(10,10))
-            
         self.Get_brightness(self.Brightness_Manager.return_brightness())
 
     def Get_brightness(self,Brightness):
@@ -183,12 +196,6 @@ class MapWidget(Widget):
             Brightness = (100 - Brightness)/100
             self.BrightColor = Color(0,0,0,Brightness)
             self.BrightRect = Rectangle(pos=(0,0),size=(Window.width,Window.height))
-
-    # def on_hover(self, window, pos):
-    #     for block in self.Blocks_coords:
-    #         if (block[0] <= pos[0] <= block[0] + block[2]) and (block[1] <= pos[1] <= block[1] + block[2]):
-    #             print(block[0:2])
-    #             print(block[0] + block[2],block[1] + block[2])
 
     def Move_Blocks(self):
         for index, block in enumerate(self.HMovingBlocks):
@@ -223,10 +230,27 @@ class MapWidget(Widget):
             if round(block[0].pos[1]) in self.VBorders or round(block[0].pos[1] + height) in self.VBorders:
                 block[1] *= -1 
 
+    def Move_Blocks2(self):
+        for block in self.HMovingBlocks:
+            x, y = block[0].pos
+            for o in range(len(self.DeadlyBlocks)):
+                if self.DeadlyBlocks[o].pos[0] == block[0].pos[0] and self.DeadlyBlocks[o].pos[1] == block[0].pos[1]:
+                    self.DeadlyBlocks.remove(self.DeadlyBlocks[o])
+                    break
+            x += block[1]
+            block[0].pos = (x, y)
+
+            self.Add_Block2(x,y,block[0].size[0])
+            block[0].texture.bind()
+
+            width = block[0].size[0]
+            if round(block[0].pos[0]) in self.HBorders or round(block[0].pos[0] + width) in self.HBorders:
+                block[1] *= -1 
+
     def Tile_Transformation(self,x,y,layer):
         x_scale = Window.width/(layer.width *self.Tile_size)
         y_scale = Window.height/(layer.height * self.Tile_size)
-        scale = max(x_scale,y_scale) # Figure out later
+        scale = max(x_scale,y_scale)
         tr_x = x * self.Tile_size * x_scale
         tr_y = (layer.height - y - 1) * self.Tile_size * y_scale 
         self.Tile_size = self.Tile_size * scale
@@ -236,9 +260,19 @@ class MapWidget(Widget):
         Rect = Widget(pos=(x, y), size=(size, size))
         self.Blocks.append(Rect)
 
+    def Add_Block2(self,x,y,size):
+        Rect = Widget(pos=(x, y), size=(size, size))
+        self.DeadlyBlocks.append(Rect)
+
     def on_size(self,*args):
         self.Blocks = []
-        # self.Blocks_coords = []
+        self.HMovingBlocks = []
+        self.VMovingBlocks = []
+        self.Blocks_coords = []
+        self.HBorders = []
+        self.VBorders = []
+        self.DeadlyBlocks = []
+        self.Spawnpoint = ()
         self.canvas.clear()
         self.Load_Level()
         self.Window_change = True

@@ -5,12 +5,12 @@ from kivy.graphics.vertex_instructions import Rectangle
 from kivy.core.window import Window
 from kivy.properties import Clock
 from kivy.graphics.context_instructions import Color
-# from kivy.uix.widget import Widget
 #Other files
 from StartSceen import TitleScreenWidget
 from Player import Player
 from Levels import MapWidget
 from Pausemenu import PauseWidgets
+from End import EndScreen
 #--------
 
 Builder.load_file("titlescreen.kv")
@@ -24,6 +24,7 @@ class MainGameWidgets(RelativeLayout):
         self.Old_Window_Size = [Window.width,Window.height]
         self.Player = Player()
         self.Pause = False
+        self.Ended = False
         self.Sprint_Cooldown = 10
         self.Sprint_Timer = 3
         self._keyboard = Window.request_keyboard(self.keyboard_closed, self)
@@ -91,24 +92,25 @@ class MainGameWidgets(RelativeLayout):
             self.Player.Death = True
     
     def Sprint_Counter(self,dt):
-        if self.Sprint_Timer > 0:
-            if abs(self.Player.Direction_x) == self.Player.SprintSpeed:
-                self.Sprint_Timer -= 1
-                self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
-                if self.Sprint_Timer == 0:
-                    self.Map.Sprint_label.text = f"Sprint Cooldown: {self.Sprint_Cooldown}"
-                    self.Player.Sprint = False
-                    self.Player.Direction_x = 0
+        if not self.Ended:
+            if self.Sprint_Timer > 0:
+                if abs(self.Player.Direction_x) == self.Player.SprintSpeed:
+                    self.Sprint_Timer -= 1
+                    self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
+                    if self.Sprint_Timer == 0:
+                        self.Map.Sprint_label.text = f"Sprint Cooldown: {self.Sprint_Cooldown}"
+                        self.Player.Sprint = False
+                        self.Player.Direction_x = 0
+                else:
+                    self.Sprint_Timer = 3
+                    self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
             else:
-                self.Sprint_Timer = 3
-                self.Map.Sprint_label.text = f"Sprint Timer: {self.Sprint_Timer}"
-        else:
-            self.Sprint_Cooldown -= 1
-            self.Map.Sprint_label.text = f"Sprint Cooldown: {self.Sprint_Cooldown}"
-            if self.Sprint_Cooldown == 0:
-                self.Sprint_Cooldown = 10
-                self.Player.Sprint = True
-                self.Sprint_Timer = 3
+                self.Sprint_Cooldown -= 1
+                self.Map.Sprint_label.text = f"Sprint Cooldown: {self.Sprint_Cooldown}"
+                if self.Sprint_Cooldown == 0:
+                    self.Sprint_Cooldown = 10
+                    self.Player.Sprint = True
+                    self.Sprint_Timer = 3
 
     def Death(self):
         if self.Player.Death:
@@ -153,6 +155,13 @@ class MainGameWidgets(RelativeLayout):
                 self.Redraw_Player()
                 if self.Map.Level == 2:Clock.schedule_interval(self.Sprint_Counter,1)
                 self.Map.Player_Amno.text = f"{self.Player.Ammo}/{self.Player.FullAmmo}"
+            else:
+                self.Map.Cooldown_label.text = "The End"
+                self.Ended = True
+                self.remove_widget(self.Map)
+                Builder.load_file("End.kv")
+                self.End = EndScreen()
+                self.add_widget(self.End)
     
     def Gun_update(self):
         if self.Map.Level < 4:
@@ -170,6 +179,9 @@ class MainGameWidgets(RelativeLayout):
             self.Player.Gun = "Shotgun"
             self.Player.Ammo = 15
             self.Player.FullAmmo = 15
+        elif self.Map.Level == 7:
+            self.Player.Ammo = 0
+            self.Player.FullAmmo = 0
 
     def Change_Labels(self):
         self.Map.Cooldown_label.text = f"Cooldown: {self.Player.Cooldown}s"
@@ -179,16 +191,25 @@ class MainGameWidgets(RelativeLayout):
         if self.Player.Ammo == 0: self.Map.Player_Amno.color = (1,0,0,1)
         if self.Player.Ammo > 0: self.Map.Player_Amno.color = (0,1,0,1)
 
+    def DeathlyBlocks(self):
+        for block in self.Map.DeadlyBlocks:
+            if self.Player.CollideWiget.collide_widget(block):
+                self.Player.Death = True
+
     def update(self,dt):
-        if self.Game_start and not self.Pause:
+        if self.Game_start and not self.Pause and not self.Ended:
             self.Player.update()
             self.Window_Change()
             self.Redraw_Player()
             self.Borders()
             self.Death()
             if self.Map.Level > 2:
-                self.Map.Move_Blocks()
+                if self.Map.Level != 7:
+                    self.Map.Move_Blocks()
                 self.Rule3()
+            if self.Map.Level == 7:
+                self.DeathlyBlocks()
+                self.Map.Move_Blocks2()
             self.Change_Labels()
             self.Next_Level()
 

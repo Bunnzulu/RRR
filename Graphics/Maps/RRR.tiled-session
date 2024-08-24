@@ -71,10 +71,21 @@
                 4
             ],
             "scale": 0.75,
-            "selectedLayer": 1,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 387.33333333333326,
                 "y": 317.99999999999994
+            }
+        },
+        "Level7.tmx": {
+            "expandedObjectLayers": [
+                5
+            ],
+            "scale": 1.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 130.99999999999997,
+                "y": 396.33333333333337
             }
         },
         "Main tiles.tsx": {
